@@ -2,6 +2,9 @@ package com.raspberyl.mynews.controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private RecyclerView mRecyclerView;
+    private ArticleAdapter mArticleAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +63,24 @@ public class MainActivity extends AppCompatActivity {
                     // Json output into console
                     Log.w("Full json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
                     Log.v("Response code", (Integer.toString(CALL_RESPONSE_CODE)));
+
+                    // RecyclerView
+                    mRecyclerView = findViewById(R.id.recycler_view);
+
+                    mArticleAdapter = new ArticleAdapter(mArticleList, getBaseContext());
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                    mRecyclerView.setLayoutManager(mLayoutManager);
+                    mRecyclerView.setAdapter(mArticleAdapter);
+
+                    // Add horizontal divider to the Recyclerview
+
+                    DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
+                            mRecyclerView.getContext(),
+                            DividerItemDecoration.VERTICAL);
+
+                    mRecyclerView.addItemDecoration(mDividerItemDecoration);
+
+
 
                 }
 

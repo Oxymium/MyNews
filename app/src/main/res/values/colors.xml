@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="myNewsBlue">#3BB4CD</color>
+    <color name="myNewsDarkBlue">#2E8D9C</color>
+    <color name="myNewsYellow">#F4E132</color>
+
 </resources>
