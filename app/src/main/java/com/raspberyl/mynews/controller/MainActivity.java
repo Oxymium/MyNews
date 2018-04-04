@@ -1,38 +1,25 @@
 package com.raspberyl.mynews.controller;
 
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
+
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.google.gson.GsonBuilder;
-import com.raspberyl.mynews.API.ApiClient;
-import com.raspberyl.mynews.API.ApiInterface;
 import com.raspberyl.mynews.R;
-import com.raspberyl.mynews.model.Article;
-import com.raspberyl.mynews.model.ResponseWrapper;
+import com.raspberyl.mynews.fragments.FragmentBusiness;
+import com.raspberyl.mynews.fragments.FragmentMostPopular;
+import com.raspberyl.mynews.fragments.FragmentTopStories;
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    // API KEY - Required for the app to work.
-    // Is the same for the 3 API 「Top Stories」, 「Most popular」 & 「Article Search」
 
-    private static final String NYT_API_KEY = "7423ec0d6b104a77b3c1cbcf877e8fb9";
-
-    // Response code
-
-    private int CALL_RESPONSE_CODE;
-
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
+    private ViewPagerAdapter mViewPagerAdapter;
 
     private RecyclerView mRecyclerView;
     private ArticleAdapter mArticleAdapter;
@@ -42,9 +29,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Ensures NYT_API_KEY isn't empty
+        mTabLayout = findViewById(R.id.tablayout);
+        mViewPager = findViewById(R.id.viewpager);
 
-        if (NYT_API_KEY.isEmpty()) {
+        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        // Fragments (tabs)
+        mViewPagerAdapter.AddFragment(new FragmentTopStories(), "Top Stories");
+        mViewPagerAdapter.AddFragment(new FragmentMostPopular(), "Most Popular");
+        mViewPagerAdapter.AddFragment(new FragmentBusiness(), "Business");
+
+        mViewPager.setAdapter(mViewPagerAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
+
+        // Remove shadow from action bar
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setElevation(0);
+
+
+
+
+        // Ensures NYT_API_KEY isn't empty
+        /* if (NYT_API_KEY.isEmpty()) {
 
             Toast.makeText(this, "Please provide valid NYT API KEY", Toast.LENGTH_LONG);
 
@@ -91,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-        }
+        } */
     }
 }
 

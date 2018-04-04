@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,10 +49,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.MyViewHo
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
+        View itemView = LayoutInflater.from(mContext)
                 .inflate(R.layout.article_view, parent, false);
-
-        return new MyViewHolder(itemView);
+        MyViewHolder vHolder = new MyViewHolder(itemView);
+        return vHolder;
     }
 
     @Override
@@ -85,7 +84,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.MyViewHo
         holder.description.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "LOAD article", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "LOADING article", Toast.LENGTH_SHORT).show();
 
                 // Pass URL to the WebView in a new Activity
                 Intent intent = new Intent(mContext, WebViewActivity.class);

@@ -132,7 +132,7 @@ public class Article {
 
     public String getPublished_date_converted() {
         @SuppressLint("SimpleDateFormat") DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-        @SuppressLint("SimpleDateFormat") DateFormat outputFormat = new SimpleDateFormat("dd"+"/"+"MM"+"/"+"yyyy");
+        @SuppressLint("SimpleDateFormat") DateFormat outputFormat = new SimpleDateFormat("dd"+"/"+"MM"+"/"+"yy");
         String resultDate = "";
         try {
             resultDate = outputFormat.format(inputFormat.parse(published_date));
