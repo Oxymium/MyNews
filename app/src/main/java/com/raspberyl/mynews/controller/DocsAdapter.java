@@ -62,7 +62,7 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.MyViewHolder> 
         final Docs docs = mDocsList.get(position);
 
 
-        holder.category.setText(docs.getWeb_url());
+        holder.description.setText(docs.getWeb_url());
     }
 
     @Override
