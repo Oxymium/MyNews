@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 
 import com.raspberyl.mynews.model.Article;
+import com.raspberyl.mynews.utils.DateConvertUtils;
 import com.squareup.picasso.Picasso;
 import com.raspberyl.mynews.R;
 
@@ -60,15 +61,18 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.MyViewHo
 
         final Article article = mArticleList.get(position);
 
-        // Display section
-        // holder.category.setText(article.getSection() + " > " + article.getSubsection());
-        holder.category.setText(article.getSection_Subsection());
-        // Display content
+        // Display Section & Subsection in the following format: 「Section」>「Subsection」
+        // If 「Subsection」doesn't exist, simply displays 「Section」
+        if (article.getSubsection() == null) {
+            holder.category.setText(article.getSection());
+        }else{ holder.category.setText(article.getSection_Subsection()); }
+
+        // Display「Title」in the View's body
         holder.description.setText(article.getTitle());
 
-        // Display converted date
-        // DATE FORMAT: 2018-03-23T05:00:07-04:00
-        holder.date.setText(article.getPublished_date_converted());
+        // Display「Date」in the View.
+        // Output format should be「dd/MM/yy」 (for instance: 10/03/18 for 10th March 2018)
+        holder.date.setText(DateConvertUtils.getPublished_date_converted(article.getPublished_date()));
 
         // Display image
         if(article.getMultimedia() != null && article.getMultimedia().size() > 0) {

@@ -19,7 +19,7 @@ import com.raspberyl.mynews.API.ApiKey;
 import com.raspberyl.mynews.R;
 import com.raspberyl.mynews.controller.ArticleAdapter;
 import com.raspberyl.mynews.model.Article;
-import com.raspberyl.mynews.model.ResponseWrapper;
+import com.raspberyl.mynews.model.ArticleWrapper;
 
 import java.util.List;
 
@@ -60,22 +60,22 @@ public class FragmentMostPopular extends Fragment {
 
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ResponseWrapper> call = apiService.loadMostPopular(ApiKey.NYT_API_KEY);
-        call.enqueue(new Callback<ResponseWrapper>() {
+        Call<ArticleWrapper> call = apiService.loadMostPopular(ApiKey.NYT_API_KEY);
+        call.enqueue(new Callback<ArticleWrapper>() {
             @Override
-            public void onResponse(Call<ResponseWrapper> call, Response<ResponseWrapper> response) {
+            public void onResponse(Call<ArticleWrapper> call, Response<ArticleWrapper> response) {
 
                 MOSTPOPULAR_ANSWER_CODE = response.code();
                 mMostPopularList = response.body().getResults();
 
                 // Json output into console
-                Log.v("「Most popular」response", (Integer.toString(MOSTPOPULAR_ANSWER_CODE)));
-                Log.w("Full「Most popular」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
+                //Log.v("「Most popular」response", (Integer.toString(MOSTPOPULAR_ANSWER_CODE)));
+                //Log.w("Full「Most popular」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
 
 
-                /* mArticleAdapter = new ArticleAdapter(mMostPopularList, getContext());
+                mArticleAdapter = new ArticleAdapter(mMostPopularList, getContext());
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                mRecyclerView.setAdapter(mArticleAdapter); */
+                mRecyclerView.setAdapter(mArticleAdapter);
 
 
                 // Add horizontal divider to the Recyclerview
@@ -84,13 +84,13 @@ public class FragmentMostPopular extends Fragment {
                 //mRecyclerView.getContext(),
                 //DividerItemDecoration.VERTICAL);
 
-                //mRecyclerView.addItemDecoration(mDividerItemDecoration);
+                //mRecyclerView.addItemDecoration(mDividerItemDecoration); */
 
 
             }
 
             @Override
-            public void onFailure(Call<com.raspberyl.mynews.model.ResponseWrapper> call, Throwable t) {
+            public void onFailure(Call<com.raspberyl.mynews.model.ArticleWrapper> call, Throwable t) {
 
                 Log.e(TAG, t.toString());
 

@@ -13,8 +13,8 @@ import static org.junit.Assert.*;
  */
 public class MyNewsTest  {
 
-    @Test
-    public void test_getSharedPreferences() throws Exception {
+    /*@Test
+    public static void test_getPublished_date_converted() throws Exception {
 
         // Create new instance of mock SharedPreferencesUtils
         SharedPreferencesUtils sharedPreferencesUtils = mock(SharedPreferencesUtils.class);

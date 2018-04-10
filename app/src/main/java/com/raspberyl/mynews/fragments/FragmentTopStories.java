@@ -18,6 +18,7 @@ import com.raspberyl.mynews.API.ApiKey;
 import com.raspberyl.mynews.R;
 import com.raspberyl.mynews.controller.ArticleAdapter;
 import com.raspberyl.mynews.model.Article;
+import com.raspberyl.mynews.model.ArticleWrapper;
 import com.raspberyl.mynews.model.ResponseWrapper;
 
 import java.util.List;
@@ -59,18 +60,18 @@ public class FragmentTopStories extends Fragment {
         super.onCreate(savedInstanceState);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ResponseWrapper> call = apiService.loadArticles(ApiKey.NYT_API_KEY);
-        call.enqueue(new Callback<ResponseWrapper>() {
+        Call<ArticleWrapper> call = apiService.loadArticles(ApiKey.NYT_API_KEY);
+        call.enqueue(new Callback<ArticleWrapper>() {
             @Override
-            public void onResponse(Call<ResponseWrapper> call, Response<ResponseWrapper> response) {
+            public void onResponse(Call<ArticleWrapper> call, Response<ArticleWrapper> response) {
 
                 if (response.isSuccessful()) {
 
                     TOPSTORIES_ANSWER_CODE = response.code();
                     mTopStoriesList = response.body().getResults();
                     // Json output into console
-                    Log.v("「Top Stories」response", (Integer.toString(TOPSTORIES_ANSWER_CODE)));
-                    Log.w("Full「Top Stories」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
+                    //Log.v("「Top Stories」response", (Integer.toString(TOPSTORIES_ANSWER_CODE)));
+                    //Log.w("Full「Top Stories」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
 
                     mArticleAdapter = new ArticleAdapter(mTopStoriesList, getContext());
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -94,7 +95,7 @@ public class FragmentTopStories extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<com.raspberyl.mynews.model.ResponseWrapper> call, Throwable t) {
+            public void onFailure(Call<com.raspberyl.mynews.model.ArticleWrapper> call, Throwable t) {
 
                 Log.e(TAG, t.toString());
 

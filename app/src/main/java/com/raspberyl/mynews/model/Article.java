@@ -49,16 +49,22 @@ public class Article {
 
     private String short_url;
 
+    @SerializedName("media")
+    @Expose
+
+    private List<Media> media;
+
 
     // Constructors
 
-    public Article(String subsection, String section, String title, String published_date, List<Multimedia> multimedia, String short_url) {
+    public Article(String subsection, String section, String title, String published_date, List<Multimedia> multimedia, String short_url, List<Media> media) {
         this.subsection = subsection;
         this.section = section;
         this.title = title;
         this.published_date = published_date;
         this.multimedia = multimedia;
         this.short_url = short_url;
+        this.media = media;
 
     }
 
@@ -92,7 +98,9 @@ public class Article {
         return published_date;
     }
 
-    public void setPublished_date(String published_date) { this.published_date = published_date; }
+    public void setPublished_date(String published_date) {
+        this.published_date = published_date;
+    }
 
     public List<Multimedia> getMultimedia() {
         return multimedia;
@@ -110,6 +118,13 @@ public class Article {
         this.short_url = short_url;
     }
 
+    public List<Media> getMedia() {
+        return media;
+    }
+
+    public void setMedia(List<Media> media) {
+        this.media = media;
+    }
 
 
     // Display String as「[Section} > [Subsection}」, and only 「Section」 if subsection is empty
@@ -121,24 +136,10 @@ public class Article {
 
         if (subsection.isEmpty()) {
             return section_simple;
-        }else{
+        } else {
             return section_subsection;
         }
     }
 
 
-    // Convert base date format input 「yyyy-MM-dd'T'HH:mm:ssXXX」 to desired date format 「dd"+"/"+"MM"+"/"+"yyyy」
-    // Example: 「2018-03-23T05:00:07-04:00」 to 「23/03/2018」
-
-    public String getPublished_date_converted() {
-        @SuppressLint("SimpleDateFormat") DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-        @SuppressLint("SimpleDateFormat") DateFormat outputFormat = new SimpleDateFormat("dd"+"/"+"MM"+"/"+"yy");
-        String resultDate = "";
-        try {
-            resultDate = outputFormat.format(inputFormat.parse(published_date));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return resultDate;
-    }
 }

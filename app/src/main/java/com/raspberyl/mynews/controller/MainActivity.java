@@ -21,8 +21,6 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private ViewPagerAdapter mViewPagerAdapter;
 
-    private RecyclerView mRecyclerView;
-    private ArticleAdapter mArticleAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = findViewById(R.id.viewpager);
 
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        // Required to keep tabs "alive" (otherwise, 1st one will be destroyed to free memory when 3rd is called)
+        mViewPager.setOffscreenPageLimit(2);
 
         // Fragments (tabs)
         mViewPagerAdapter.AddFragment(new FragmentTopStories(), "Top Stories");

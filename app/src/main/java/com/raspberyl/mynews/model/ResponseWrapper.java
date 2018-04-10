@@ -6,32 +6,33 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Created by Asuka on 28/03/2018.
+ * Created by Asuka on 04/04/2018.
  */
 
 public class ResponseWrapper {
 
-    @SerializedName("results")
+    @SerializedName("response")
     @Expose
-    private List<Article> results;
+    private Response response;
+
 
 
     // Constructor
-    public ResponseWrapper (List<Article> results) {
-        this.results = results;
+    public ResponseWrapper (Response response) {
+        this.response = response;
+
     }
 
 
     // Getter & setter
-    public List<Article> getResults() {
+    public Response getResponse() {
 
-        return results;
+        return response;
     }
 
-    public void setResults(List<Article> results) {
-        this.results = results;
+    public void setResponse(Response response) {
+        this.response = response;
     }
-
 
 
 }
