@@ -44,10 +44,10 @@ public class Article {
     private List<Multimedia> multimedia;
 
 
-    @SerializedName("short_url")
+    @SerializedName("url")
     @Expose
 
-    private String short_url;
+    private String url;
 
     @SerializedName("media")
     @Expose
@@ -57,13 +57,13 @@ public class Article {
 
     // Constructors
 
-    public Article(String subsection, String section, String title, String published_date, List<Multimedia> multimedia, String short_url, List<Media> media) {
+    public Article(String subsection, String section, String title, String published_date, List<Multimedia> multimedia, String url, List<Media> media) {
         this.subsection = subsection;
         this.section = section;
         this.title = title;
         this.published_date = published_date;
         this.multimedia = multimedia;
-        this.short_url = short_url;
+        this.url = url;
         this.media = media;
 
     }
@@ -110,12 +110,12 @@ public class Article {
         this.multimedia = multimedia;
     }
 
-    public String getShort_url() {
-        return short_url;
+    public String getUrl() {
+        return url;
     }
 
-    public void setShort_url(String short_url) {
-        this.short_url = short_url;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public List<Media> getMedia() {

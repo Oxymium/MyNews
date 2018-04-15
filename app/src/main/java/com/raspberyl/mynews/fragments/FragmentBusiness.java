@@ -4,6 +4,7 @@ package com.raspberyl.mynews.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -69,8 +70,8 @@ public class FragmentBusiness extends Fragment {
 
 
                 // Json output into console
-                Log.v("「Business」response", (Integer.toString(BUSINESS_ANSWER_CODE)));
-                Log.w("Full「Business」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
+                //Log.v("「Business」response", (Integer.toString(BUSINESS_ANSWER_CODE)));
+                //Log.w("Full「Business」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
 
 
                 mDocsAdapter = new DocsAdapter(mBusinessList, getContext());
@@ -80,11 +81,11 @@ public class FragmentBusiness extends Fragment {
 
                 // Add horizontal divider to the Recyclerview
 
-                //DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
-                //mRecyclerView.getContext(),
-                //DividerItemDecoration.VERTICAL);
+                DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
+                mRecyclerView.getContext(),
+                DividerItemDecoration.VERTICAL);
 
-                //mRecyclerView.addItemDecoration(mDividerItemDecoration); */
+                mRecyclerView.addItemDecoration(mDividerItemDecoration);
 
 
             }

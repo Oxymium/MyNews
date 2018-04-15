@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 
 import com.raspberyl.mynews.model.Article;
+import com.raspberyl.mynews.model.MediaMetadata;
 import com.raspberyl.mynews.utils.DateConvertUtils;
 import com.squareup.picasso.Picasso;
 import com.raspberyl.mynews.R;
@@ -61,6 +62,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.MyViewHo
 
         final Article article = mArticleList.get(position);
 
+
         // Display Section & Subsection in the following format: 「Section」>「Subsection」
         // If 「Subsection」doesn't exist, simply displays 「Section」
         if (article.getSubsection() == null) {
@@ -69,17 +71,35 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.MyViewHo
 
         // Display「Title」in the View's body
         holder.description.setText(article.getTitle());
+        //String testT = article.getMedia().get(0).getMediaMetadata().get(1).getUrl();
+        //holder.description.setText(article.getMultimedia().get(0).getUrl());
+
 
         // Display「Date」in the View.
         // Output format should be「dd/MM/yy」 (for instance: 10/03/18 for 10th March 2018)
         holder.date.setText(DateConvertUtils.getPublished_date_converted(article.getPublished_date()));
 
-        // Display image
+        // Display image (load TopStories)
         if(article.getMultimedia() != null && article.getMultimedia().size() > 0) {
             String imageUrl = article.getMultimedia().get(0).getUrl();
+
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl)
-                        .resize(200, 200)
+                        .resize(250,
+                                250)
+                        .into(holder.thumbnail);
+            }
+        }
+
+        // Display image (load MostPopular)
+        if(article.getMedia() != null && article.getMedia().size() > 0) {
+            String imageUrl2 = article.getMedia().get(0).getMediaMetadata().get(1).getUrl();
+
+
+            if (!TextUtils.isEmpty(imageUrl2)) {
+                Picasso.get().load(imageUrl2)
+                        .resize(250,
+                                250)
                         .into(holder.thumbnail);
             }
         }
@@ -92,7 +112,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.MyViewHo
 
                 // Pass URL to the WebView in a new Activity
                 Intent intent = new Intent(mContext, WebViewActivity.class);
-                intent.putExtra("WebViewUrl", article.getShort_url());
+                intent.putExtra("WebViewUrl", article.getUrl());
                 mContext.startActivity(intent);
             }
         });

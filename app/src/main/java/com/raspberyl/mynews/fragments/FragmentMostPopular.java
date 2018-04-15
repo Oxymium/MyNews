@@ -69,8 +69,8 @@ public class FragmentMostPopular extends Fragment {
                 mMostPopularList = response.body().getResults();
 
                 // Json output into console
-                //Log.v("「Most popular」response", (Integer.toString(MOSTPOPULAR_ANSWER_CODE)));
-                //Log.w("Full「Most popular」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
+                Log.v("「Most popular」response", (Integer.toString(MOSTPOPULAR_ANSWER_CODE)));
+                Log.w("Full「Most popular」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
 
 
                 mArticleAdapter = new ArticleAdapter(mMostPopularList, getContext());

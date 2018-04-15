@@ -14,6 +14,11 @@ public class Docs {
 
     private String web_url;
 
+    @SerializedName("snippet")
+    @Expose
+
+    private String snippet;
+
     @SerializedName("source")
     @Expose
 
@@ -30,10 +35,6 @@ public class Docs {
 
     private String subsection_name;
 
-    @SerializedName("pub_date")
-    @Expose
-
-    private String pub_date;
 
     @SerializedName("multimedia")
     @Expose
@@ -43,12 +44,13 @@ public class Docs {
     // Constructors
 
 
-    public Docs(String web_url, String source, String section_name, String subsection_name, String pub_date, List<Multimedia> multimedia) {
+
+    public Docs(String web_url, String snippet, String source, String section_name, String subsection_name, List<Multimedia> multimedia) {
         this.web_url = web_url;
+        this.snippet = snippet;
         this.source = source;
         this.section_name = section_name;
         this.subsection_name = subsection_name;
-        this.pub_date = pub_date;
         this.multimedia = multimedia;
 
     }
@@ -61,6 +63,14 @@ public class Docs {
 
     public void setWeb_url(String web_url) {
         this.web_url = web_url;
+    }
+
+    public String getSnippet() {
+        return snippet;
+    }
+
+    public void setSnippet(String snippet) {
+        this.snippet = snippet;
     }
 
     public String getSource() {
@@ -85,14 +95,6 @@ public class Docs {
 
     public void setSubsection_name(String subsection_name) {
         this.subsection_name = subsection_name;
-    }
-
-    public String getPub_date() {
-        return pub_date;
-    }
-
-    public void setPub_date(String pub_date) {
-        this.pub_date = pub_date;
     }
 
     public List<Multimedia> getMultimedia() {

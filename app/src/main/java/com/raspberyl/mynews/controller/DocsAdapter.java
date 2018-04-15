@@ -62,7 +62,10 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.MyViewHolder> 
         final Docs docs = mDocsList.get(position);
 
 
-        holder.description.setText(docs.getWeb_url());
+        // Display「Date」in the View.
+        // Output format should be「dd/MM/yy」 (for instance: 10/03/18 for 10th March 2018)
+        holder.description.setText(docs.getSnippet());
+
     }
 
     @Override
