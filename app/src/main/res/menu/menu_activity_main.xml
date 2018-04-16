@@ -2,24 +2,35 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/menu_activity_main_params"
-        android:icon="@drawable/ic_menu_white_24dp"
-        android:title="menu"
-        app:showAsAction="always">
 
-    </item>
     <item
-        android:id="@+id/menu_activity_se"
+        android:id="@+id/toolbar_search"
         android:icon="@drawable/ic_search_white_24dp"
-        android:title="search"
-        app:showAsAction="always"></item>
-    <item
-        android:id="@+id/menu_activity_main_search"
-        android:icon="@drawable/ic_more_vert_white_24dp"
-        android:title="search"
+        android:title="@string/toolbar_string_search"
         app:showAsAction="always">
 
     </item>
+
+    <item
+    android:id="@+id/toolbar_notifications"
+    android:title="@string/toolbar_string_notifications"
+    app:showAsAction="never">
+
+    </item>
+
+    <item
+        android:id="@+id/toolbar_help"
+        android:title="@string/toolbar_string_help"
+        app:showAsAction="never">
+
+    </item>
+
+    <item
+        android:id="@+id/toolbar_about"
+        android:title="@string/toolbar_string_about"
+        app:showAsAction="never">
+
+    </item>
+
 
 </menu>

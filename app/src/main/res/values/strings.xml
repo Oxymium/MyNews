@@ -1,3 +1,26 @@
 <resources>
-    <string name="app_name">MyNews</string>
+
+    <!-- App name -->
+    <string name="app_name">My News</string>
+
+    <!-- Toolbar Strings -->
+    <string name="toolbar_string_search">Search</string>
+    <string name="toolbar_string_notifications">Notifications</string>
+    <string name="toolbar_string_help">Help</string>
+    <string name="toolbar_string_about">About</string>
+
+    <!-- Tab names Strings -->
+    <string name="tab_name_1">Top Stories</string>
+    <string name="tab_name_2">Most Popular</string>
+    <string name="tab_name_3">Business</string>
+
+    <!-- AlertDialog buttons Strings -->
+    <string name="alertdialog_button_neutral">OK</string>
+
+    <!-- AlertDialog content Strings -->
+    <string name="alertdialog_content_help_string">TO DO</string>
+    <string name="alertdialog_content_about_string">All articles come from the <b>New York Times APIs</b>, and belong to their respective owners. API used: <i>TopStories API</i>, <i>MostPopular API</i> and <i>Search API</i>.</string>
+
+
+
 </resources>

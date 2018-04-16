@@ -1,11 +1,33 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/myNewsBlue</item>
         <item name="colorPrimaryDark">@color/myNewsDarkBlue</item>
         <item name="colorAccent">@color/myNewsYellow</item>
     </style>
+
+    <!-- TOOLBAR THEME -->
+    <style name="MyNewsToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!-- Color of the title text in the Toolbar -->
+        <item name="android:textColorPrimary">@color/myNewsWhite</item>
+        <item name="android:textColorSecondary">@color/myNewsWhite</item>
+        <item name="android:actionMenuTextColor">@color/myNewsYellow</item>
+
+    </style>
+
+    <!-- TOOLBAR TITLE THEME -->
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+    </style>
+
+    <!-- OVERFLOW THEME -->
+    <style name="Toolbar.OverflowTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/myNewsYellow</item>
+        <item name="android:textColor">@color/myNewsDarkBlue</item>
+    </style>
+
+
+
 
 </resources>

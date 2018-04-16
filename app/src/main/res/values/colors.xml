@@ -8,4 +8,6 @@
     <color name="myNewsDarkBlue">#2E8D9C</color>
     <color name="myNewsYellow">#F4E132</color>
 
+    <color name="myNewsWhite">#FFFFFF</color>
+
 </resources>

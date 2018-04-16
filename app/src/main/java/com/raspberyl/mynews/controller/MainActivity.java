@@ -1,12 +1,19 @@
 package com.raspberyl.mynews.controller;
 
+
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.raspberyl.mynews.R;
 import com.raspberyl.mynews.fragments.FragmentBusiness;
@@ -16,7 +23,7 @@ import com.raspberyl.mynews.fragments.FragmentTopStories;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    private Toolbar mToolbar;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private ViewPagerAdapter mViewPagerAdapter;
@@ -26,18 +33,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.configureToolbar();
 
         mTabLayout = findViewById(R.id.tablayout);
         mViewPager = findViewById(R.id.viewpager);
 
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        // Required to keep tabs "alive" (otherwise, 1st one will be destroyed to free memory when 3rd is called)
+        // Required to keep tabs in memory (otherwise, 1st one will be destroyed to free memory when 3rd is called)
         mViewPager.setOffscreenPageLimit(2);
 
         // Fragments (tabs)
-        mViewPagerAdapter.AddFragment(new FragmentTopStories(), "Top Stories");
-        mViewPagerAdapter.AddFragment(new FragmentMostPopular(), "Most Popular");
-        mViewPagerAdapter.AddFragment(new FragmentBusiness(), "Business");
+        mViewPagerAdapter.AddFragment(new FragmentTopStories(), this.getResources().getString(R.string.tab_name_1));
+        mViewPagerAdapter.AddFragment(new FragmentMostPopular(), this.getResources().getString(R.string.tab_name_2));
+        mViewPagerAdapter.AddFragment(new FragmentBusiness(), this.getResources().getString(R.string.tab_name_3));
 
         mViewPager.setAdapter(mViewPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
@@ -47,58 +55,88 @@ public class MainActivity extends AppCompatActivity {
         mActionBar.setElevation(0);
 
 
-
-
-        // Ensures NYT_API_KEY isn't empty
-        /* if (NYT_API_KEY.isEmpty()) {
-
-            Toast.makeText(this, "Please provide valid NYT API KEY", Toast.LENGTH_LONG);
-
-        } else {
-
-            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<ResponseWrapper> call = apiService.loadArticles(NYT_API_KEY);
-            call.enqueue(new Callback<com.raspberyl.mynews.model.ResponseWrapper>() {
-                @Override
-                public void onResponse(Call<ResponseWrapper> call, Response<ResponseWrapper> response) {
-
-                    CALL_RESPONSE_CODE = response.code();
-
-                    List<Article> mArticleList = response.body().getResults();
-
-                    // Json output into console
-                    Log.w("Full json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
-                    Log.v("Response code", (Integer.toString(CALL_RESPONSE_CODE)));
-
-                    // RecyclerView
-                    mRecyclerView = findViewById(R.id.recycler_view);
-
-                    mArticleAdapter = new ArticleAdapter(mArticleList, getBaseContext());
-                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-                    mRecyclerView.setLayoutManager(mLayoutManager);
-                    mRecyclerView.setAdapter(mArticleAdapter);
-
-                    // Add horizontal divider to the Recyclerview
-
-                    DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
-                            mRecyclerView.getContext(),
-                            DividerItemDecoration.VERTICAL);
-
-                    mRecyclerView.addItemDecoration(mDividerItemDecoration);
-
-
-
-                }
-
-                @Override
-                public void onFailure(Call<com.raspberyl.mynews.model.ResponseWrapper> call, Throwable t) {
-
-                    Log.e(TAG, t.toString());
-
-                }
-            });
-        } */
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate menu and add to the Toolbar
+        getMenuInflater().inflate(R.menu.menu_activity_main, menu);
+        return true;
+    }
+
+    private void configureToolbar(){
+        // Get the toolbar view inside the activity layout
+        mToolbar = findViewById(R.id.toolbar);
+        // Sets the Toolbar
+        setSupportActionBar(mToolbar);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Menu item actions
+        switch (item.getItemId()) {
+            // Start SearchActivity from the「Search」item
+            case R.id.toolbar_search:
+                Intent mIntentSearch = new Intent(this, SearchActivity.class);
+                this.startActivity(mIntentSearch);
+                return true;
+            // Start NotificationsActivity from the「Notification」item
+            case R.id.toolbar_notifications:
+                Intent mIntentNotifications = new Intent(this, NotificationsActivity.class);
+                this.startActivity(mIntentNotifications);
+                return true;
+            // Start onHelpSelected() from the「Help」item
+            case R.id.toolbar_help:
+                onHelpSelected();
+                return true;
+            // Start onAboutSelected() from the「About」item
+            case R.id.toolbar_about:
+                onAboutSelected();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    public void onHelpSelected() {
+        // Build an AlertDialog for the Help section
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        // Set Title and Message content
+        builder.setTitle(R.string.toolbar_string_help);
+        builder.setMessage(getText(R.string.alertdialog_content_about_string));
+        // Neutral button
+        builder.setNeutralButton(R.string.alertdialog_button_neutral, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
+    }
+
+    public void onAboutSelected() {
+        // Build an AlertDialog for the Help section
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        // Set Title and Message content
+        builder.setTitle(R.string.toolbar_string_about);
+        builder.setMessage(getText(R.string.alertdialog_content_about_string));
+        // Neutral button
+        builder.setNeutralButton(R.string.alertdialog_button_neutral, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
+    }
+
 }
+
 
 
