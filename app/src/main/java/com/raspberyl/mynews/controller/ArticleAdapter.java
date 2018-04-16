@@ -71,9 +71,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.MyViewHo
 
         // Display「Title」in the View's body
         holder.description.setText(article.getTitle());
-        //String testT = article.getMedia().get(0).getMediaMetadata().get(1).getUrl();
-        //holder.description.setText(article.getMultimedia().get(0).getUrl());
-
 
         // Display「Date」in the View.
         // Output format should be「dd/MM/yy」 (for instance: 10/03/18 for 10th March 2018)

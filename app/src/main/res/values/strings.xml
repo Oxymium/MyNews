@@ -3,6 +3,9 @@
     <!-- App name -->
     <string name="app_name">My News</string>
 
+    <!-- API KEY -->
+    <string name="api_key">7423ec0d6b104a77b3c1cbcf877e8fb9</string>
+
     <!-- Toolbar Strings -->
     <string name="toolbar_string_search">Search</string>
     <string name="toolbar_string_notifications">Notifications</string>

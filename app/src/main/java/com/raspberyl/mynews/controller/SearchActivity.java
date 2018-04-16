@@ -22,12 +22,12 @@ public class SearchActivity extends AppCompatActivity {
 
     private void configureToolbar() {
         //Get the toolbar (Serialise)
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         //Set the toolbar
         setSupportActionBar(mToolbar);
         // Get a support ActionBar corresponding to this toolbar
         ActionBar actionBar = getSupportActionBar();
-        // Enable the Up button
+        // Enable back button
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Search Articles");
     }

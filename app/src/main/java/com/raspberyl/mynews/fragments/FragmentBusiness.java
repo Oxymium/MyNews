@@ -60,7 +60,7 @@ public class FragmentBusiness extends Fragment {
 
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ResponseWrapper> call = apiService.loadBusiness(ApiKey.NYT_API_KEY, "business");
+        Call<ResponseWrapper> call = apiService.loadBusiness(ApiKey.NYT_API_KEY, "business", "newest");
         call.enqueue(new Callback<com.raspberyl.mynews.model.ResponseWrapper>() {
             @Override
             public void onResponse(Call<ResponseWrapper> call, Response<ResponseWrapper> response) {
@@ -70,8 +70,8 @@ public class FragmentBusiness extends Fragment {
 
 
                 // Json output into console
-                //Log.v("「Business」response", (Integer.toString(BUSINESS_ANSWER_CODE)));
-                //Log.w("Full「Business」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
+                Log.v("「Business」response", (Integer.toString(BUSINESS_ANSWER_CODE)));
+                Log.w("Full「Business」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
 
 
                 mDocsAdapter = new DocsAdapter(mBusinessList, getContext());

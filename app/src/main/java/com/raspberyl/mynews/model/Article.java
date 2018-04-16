@@ -128,7 +128,6 @@ public class Article {
 
 
     // Display String as「[Section} > [Subsection}」, and only 「Section」 if subsection is empty
-
     public String getSection_Subsection() {
 
         String section_subsection = section + " > " + subsection;

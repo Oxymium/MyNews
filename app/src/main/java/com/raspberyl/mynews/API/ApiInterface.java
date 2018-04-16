@@ -20,7 +20,7 @@ public interface ApiInterface {
 
     // Business Tab
     @GET("svc/search/v2/articlesearch.json")
-    Call<ResponseWrapper> loadBusiness(@Query("api-key") String apiKey, @Query("q") String query);
+    Call<ResponseWrapper> loadBusiness(@Query("api-key") String apiKey, @Query("fq") String fquery, @Query("sort") String sort);
 
 }
 

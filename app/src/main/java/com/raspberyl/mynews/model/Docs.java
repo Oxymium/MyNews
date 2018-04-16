@@ -19,22 +19,20 @@ public class Docs {
 
     private String snippet;
 
+    @SerializedName("pub_date")
+    @Expose
+
+    private String pub_date;
+
+    @SerializedName("document_type")
+    @Expose
+
+    private String document_type;
+
     @SerializedName("source")
     @Expose
 
     private String source;
-
-    @SerializedName("section_name")
-    @Expose
-
-    private String section_name;
-
-
-    @SerializedName("subsection_name")
-    @Expose
-
-    private String subsection_name;
-
 
     @SerializedName("multimedia")
     @Expose
@@ -43,14 +41,12 @@ public class Docs {
 
     // Constructors
 
-
-
-    public Docs(String web_url, String snippet, String source, String section_name, String subsection_name, List<Multimedia> multimedia) {
+    public Docs(String web_url, String snippet, String pub_date, String document_type, String source, List<Multimedia> multimedia) {
         this.web_url = web_url;
         this.snippet = snippet;
+        this.pub_date = pub_date;
+        this.document_type = document_type;
         this.source = source;
-        this.section_name = section_name;
-        this.subsection_name = subsection_name;
         this.multimedia = multimedia;
 
     }
@@ -73,6 +69,21 @@ public class Docs {
         this.snippet = snippet;
     }
 
+    public String getPub_date() {
+        return pub_date;
+    }
+
+    public void setPub_date(String pub_date) {
+        this.pub_date = pub_date;
+    }
+
+    public String getDocument_type() {
+        return document_type;
+    }
+
+    public void setDocument_type(String document_type) {
+        this.document_type = document_type;
+    }
     public String getSource() {
         return source;
     }
@@ -81,21 +92,6 @@ public class Docs {
         this.source = source;
     }
 
-    public String getSection_name() {
-        return section_name;
-    }
-
-    public void setSection_name(String section_name) {
-        this.section_name = section_name;
-    }
-
-    public String getSubsection_name() {
-        return subsection_name;
-    }
-
-    public void setSubsection_name(String subsection_name) {
-        this.subsection_name = subsection_name;
-    }
 
     public List<Multimedia> getMultimedia() {
         return multimedia;
@@ -104,5 +100,15 @@ public class Docs {
     public void setMultimedia(List<Multimedia> multimedia) {
         this.multimedia = multimedia;
     }
+
+    // Method to returns 「Source」 > 「Article」 format
+    public String getSource_documentType() {
+        StringBuilder stringBuilder = new StringBuilder(document_type);
+        stringBuilder.setCharAt(0, Character.toUpperCase(stringBuilder.charAt(0)));
+        String document_typeUpper = stringBuilder.toString();
+        String outputString = source + " > " + document_typeUpper;
+        return outputString;
+    }
+
 
 }

@@ -61,10 +61,40 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.MyViewHolder> 
 
         final Docs docs = mDocsList.get(position);
 
+        holder.category.setText(docs.getSource_documentType());
+
+
+        holder.description.setText(docs.getSnippet());
 
         // Display「Date」in the View.
         // Output format should be「dd/MM/yy」 (for instance: 10/03/18 for 10th March 2018)
-        holder.description.setText(docs.getSnippet());
+        holder.date.setText(DateConvertUtils.getPublished_date_converted(docs.getPub_date()));
+
+        // Onclicklistener
+        holder.description.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mContext, docs.getWeb_url(), Toast.LENGTH_SHORT).show();
+
+                // Pass URL to the WebView in a new Activity
+                Intent intent = new Intent(mContext, WebViewActivity.class);
+                intent.putExtra("WebViewUrl", docs.getWeb_url());
+                mContext.startActivity(intent);
+            }
+        });
+
+        if(docs.getMultimedia() != null && docs.getMultimedia().size() > 0) {
+            String imageUrl2 = docs.getMultimedia().get(2).getUrl();
+
+
+                if (!TextUtils.isEmpty(imageUrl2)) {
+                    Picasso.get().load("https://www.nytimes.com/"+ imageUrl2)
+                            .resize(250,
+                                    250)
+                            .into(holder.thumbnail);
+                }
+            }
+
 
     }
 
@@ -73,3 +103,5 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.MyViewHolder> 
         return mDocsList.size();
     }
 }
+
+
