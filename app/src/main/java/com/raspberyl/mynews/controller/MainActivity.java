@@ -28,6 +28,11 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private ViewPagerAdapter mViewPagerAdapter;
 
+    public static final String BUNDLED_EXTRA = "BUNDLED_EXTRA";
+    public static final String SEARCH_ID = "9876";
+    public static final String NOTIFICATIONS_ID = "6543";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +84,13 @@ public class MainActivity extends AppCompatActivity {
             // Start SearchActivity from the「Search」item
             case R.id.toolbar_search:
                 Intent mIntentSearch = new Intent(this, SearchActivity.class);
+                mIntentSearch.putExtra(BUNDLED_EXTRA, SEARCH_ID);
                 this.startActivity(mIntentSearch);
                 return true;
             // Start NotificationsActivity from the「Notification」item
             case R.id.toolbar_notifications:
-                Intent mIntentNotifications = new Intent(this, NotificationsActivity.class);
+                Intent mIntentNotifications = new Intent(this, SearchActivity.class);
+                mIntentNotifications.putExtra(BUNDLED_EXTRA, NOTIFICATIONS_ID);
                 this.startActivity(mIntentNotifications);
                 return true;
             // Start onHelpSelected() from the「Help」item

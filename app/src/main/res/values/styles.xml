@@ -23,8 +23,32 @@
 
     <!-- OVERFLOW THEME -->
     <style name="Toolbar.OverflowTheme" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:colorBackground">@color/myNewsYellow</item>
-        <item name="android:textColor">@color/myNewsDarkBlue</item>
+        <item name="android:colorBackground">@color/myNewsWhite</item>
+        <item name="android:textColor">@color/myNewsBlack</item>
+    </style>
+
+    <!-- EDITTEXT THEME -->
+    <style name="EditText.Theme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColorSecondary">@color/myNewsBlue</item>
+        <item name="android:textColor">@color/myNewsBlack</item>
+    </style>
+
+    <!-- CHECKBOX THEME -->
+    <style name="CheckBox.Theme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorAccent">@color/myNewsBlue</item>
+        <item name="android:textColorPrimary">@color/myNewsBlack</item>
+    </style>
+
+    <!-- BUTTON THEME -->
+    <style name="SearchButton.Theme" parent="Base.Theme.AppCompat">
+        <item name="colorButtonNormal">@color/myNewsBlue</item>
+    </style>
+
+    <!-- SWITCH THEME -->
+    <style name="Switch.Theme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorAccent">@color/myNewsBlue</item>
+        <item name="android:textColorPrimary">@color/myNewsBlack</item>
+
     </style>
 
 

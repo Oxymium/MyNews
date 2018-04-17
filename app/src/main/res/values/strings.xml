@@ -1,7 +1,9 @@
 <resources>
 
-    <!-- App name -->
+    <!-- App & Activities Strings -->
     <string name="app_name">My News</string>
+    <string name="search_title">Search Articles</string>
+    <string name="notifications_title">Notifications</string>
 
     <!-- API KEY -->
     <string name="api_key">7423ec0d6b104a77b3c1cbcf877e8fb9</string>
@@ -23,6 +25,18 @@
     <!-- AlertDialog content Strings -->
     <string name="alertdialog_content_help_string">TO DO</string>
     <string name="alertdialog_content_about_string">All articles come from the <b>New York Times APIs</b>, and belong to their respective owners. API used: <i>TopStories API</i>, <i>MostPopular API</i> and <i>Search API</i>.</string>
+
+    <!-- SearchActivity/Notifications Strings -->
+    <string name="search_box1">Arts</string>
+    <string name="search_box2">Business</string>
+    <string name="search_box3">Entrepreneurs</string>
+    <string name="search_box4">Politics</string>
+    <string name="search_box5">Sports</string>
+    <string name="search_box6">Travel</string>
+    <string name="button_search">SEARCH</string>
+    <string name="search_hint">Search query term</string>
+    <string name="switch_text">Enable notifications (once per day)</string>
+
 
 
 

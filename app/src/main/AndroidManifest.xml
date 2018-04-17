@@ -27,7 +27,6 @@
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".controller.MainActivity" />
 
-        <activity android:name=".controller.NotificationsActivity" />
         <activity android:name=".controller.WebViewActivity"></activity>
     </application>
 

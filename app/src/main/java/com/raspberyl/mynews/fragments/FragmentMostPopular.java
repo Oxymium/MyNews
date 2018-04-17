@@ -65,26 +65,32 @@ public class FragmentMostPopular extends Fragment {
             @Override
             public void onResponse(Call<ArticleWrapper> call, Response<ArticleWrapper> response) {
 
-                MOSTPOPULAR_ANSWER_CODE = response.code();
-                mMostPopularList = response.body().getResults();
+                if(response.isSuccessful()) {
+                    MOSTPOPULAR_ANSWER_CODE = response.code();
+                    mMostPopularList = response.body().getResults();
 
-                // Json output into console
-                //Log.v("「Most popular」response", (Integer.toString(MOSTPOPULAR_ANSWER_CODE)));
-                //Log.w("Full「Most popular」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
-
-
-                mArticleAdapter = new ArticleAdapter(mMostPopularList, getContext());
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                mRecyclerView.setAdapter(mArticleAdapter);
+                    // Json output into console
+                    //Log.v("「Most popular」response", (Integer.toString(MOSTPOPULAR_ANSWER_CODE)));
+                    //Log.w("Full「Most popular」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
 
 
-                // Add horizontal divider to the Recyclerview
+                    mArticleAdapter = new ArticleAdapter(mMostPopularList, getContext());
+                    mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    mRecyclerView.setAdapter(mArticleAdapter);
 
-                //DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
-                //mRecyclerView.getContext(),
-                //DividerItemDecoration.VERTICAL);
 
-                //mRecyclerView.addItemDecoration(mDividerItemDecoration); */
+                    // Add horizontal divider to the Recyclerview
+
+                    //DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
+                    //mRecyclerView.getContext(),
+                    //DividerItemDecoration.VERTICAL);
+
+                    //mRecyclerView.addItemDecoration(mDividerItemDecoration); */
+
+                }else{
+
+                    Toast.makeText(getContext(), "Error", Toast.LENGTH_LONG);
+                }
 
 
             }

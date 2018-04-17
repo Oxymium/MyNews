@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
 import com.raspberyl.mynews.API.ApiClient;
@@ -65,6 +66,8 @@ public class FragmentBusiness extends Fragment {
             @Override
             public void onResponse(Call<ResponseWrapper> call, Response<ResponseWrapper> response) {
 
+                if(response.isSuccessful()) {
+
                 BUSINESS_ANSWER_CODE = response.code();
                 mBusinessList = response.body().getResponse().getDocs();
 
@@ -86,6 +89,10 @@ public class FragmentBusiness extends Fragment {
                 DividerItemDecoration.VERTICAL);
 
                 mRecyclerView.addItemDecoration(mDividerItemDecoration);
+
+                }else{
+
+                }
 
 
             }
