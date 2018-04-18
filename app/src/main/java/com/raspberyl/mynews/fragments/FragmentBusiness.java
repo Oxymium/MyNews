@@ -63,7 +63,7 @@ public class FragmentBusiness extends Fragment {
 
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ResponseWrapper> call = apiService.loadBusiness(ApiKey.NYT_API_KEY,  BUSINESS_TAB_SEARCH, "newest");
+        Call<ResponseWrapper> call = apiService.loadBusiness(ApiKey.NYT_API_KEY,  BUSINESS_TAB_SEARCH, getContext().getString(R.string.newest_sort_order));
         call.enqueue(new Callback<com.raspberyl.mynews.model.ResponseWrapper>() {
             @Override
             public void onResponse(Call<ResponseWrapper> call, Response<ResponseWrapper> response) {

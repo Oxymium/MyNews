@@ -34,8 +34,14 @@
         <item name="android:background">@color/myNewsWhite</item>
     </style>
 
-    <!-- EDITTEXT THEME -->
-    <style name="EditText.Theme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- EDITTEXT SEARCH THEME -->
+    <style name="EditTextSearch.Theme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColorSecondary">@color/myNewsBlue</item>
+        <item name="android:textColor">@color/myNewsBlack</item>
+    </style>
+
+    <!-- EDITTEXT DATE THEME -->
+    <style name="EditTextDate.Theme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:textColorSecondary">@color/myNewsBlue</item>
         <item name="android:textColor">@color/myNewsBlack</item>
     </style>

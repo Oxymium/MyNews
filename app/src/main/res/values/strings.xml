@@ -8,6 +8,9 @@
     <!-- API KEY -->
     <string name="api_key">7423ec0d6b104a77b3c1cbcf877e8fb9</string>
 
+    <!-- API Query values -->
+    <string name="newest_sort_order">newest</string>
+
     <!-- Toolbar Strings -->
     <string name="toolbar_string_search">Search</string>
     <string name="toolbar_string_notifications">Notifications</string>
@@ -26,7 +29,15 @@
     <string name="alertdialog_content_help_string">TO DO</string>
     <string name="alertdialog_content_about_string">All articles come from the <b>New York Times APIs</b>, and belong to their respective owners. API used: <i>TopStories API</i>, <i>MostPopular API</i> and <i>Search API</i>.</string>
 
+    <string name="alertdialog_title_error_search">Error</string>
+
+    <string name="alertdialog_content_empty_checkboxes_search">At least <b>ONE</b> category must be checked before starting a search</string>
+    <string name="alertdialog_content_empty_query_search">At least <b>ONE</b> word must be inserted before starting a search</string>
+    <string name="alertdialog_content_empty_results_search">No search results found, try again</string>
+
+
     <!-- SearchActivity/Notifications Strings -->
+    <string name="news_desk_format"></string>
     <string name="search_box1">Arts</string>
     <string name="search_box2">Business</string>
     <string name="search_box3">Entrepreneurs</string>
@@ -36,6 +47,9 @@
     <string name="button_search">SEARCH</string>
     <string name="search_hint">Search query term</string>
     <string name="switch_text">Enable notifications (once per day)</string>
+
+
+
 
 
 
