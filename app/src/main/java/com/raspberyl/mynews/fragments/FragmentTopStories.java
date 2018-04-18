@@ -60,7 +60,7 @@ public class FragmentTopStories extends Fragment {
         super.onCreate(savedInstanceState);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ArticleWrapper> call = apiService.loadArticles(ApiKey.NYT_API_KEY);
+        Call<ArticleWrapper> call = apiService.loadTopStories(ApiKey.NYT_API_KEY);
         call.enqueue(new Callback<ArticleWrapper>() {
             @Override
             public void onResponse(Call<ArticleWrapper> call, Response<ArticleWrapper> response) {

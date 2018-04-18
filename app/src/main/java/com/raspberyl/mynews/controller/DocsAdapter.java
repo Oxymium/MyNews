@@ -61,7 +61,7 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.MyViewHolder> 
 
         final Docs docs = mDocsList.get(position);
 
-        holder.category.setText(docs.getSource_documentType());
+        holder.category.setText(docs.getNewdesk_sectionName());
 
 
         holder.description.setText(docs.getSnippet());

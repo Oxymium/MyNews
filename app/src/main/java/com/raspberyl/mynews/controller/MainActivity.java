@@ -109,10 +109,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void onHelpSelected() {
         // Build an AlertDialog for the Help section
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialog_Style);
         // Set Title and Message content
         builder.setTitle(R.string.toolbar_string_help);
-        builder.setMessage(getText(R.string.alertdialog_content_about_string));
+        builder.setMessage(getText(R.string.alertdialog_content_help_string));
         // Neutral button
         builder.setNeutralButton(R.string.alertdialog_button_neutral, new DialogInterface.OnClickListener() {
             @Override
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onAboutSelected() {
         // Build an AlertDialog for the Help section
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialog_Style);
         // Set Title and Message content
         builder.setTitle(R.string.toolbar_string_about);
         builder.setMessage(getText(R.string.alertdialog_content_about_string));

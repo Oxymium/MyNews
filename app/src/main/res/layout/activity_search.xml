@@ -16,7 +16,8 @@
     <EditText
         android:id="@+id/search_editText"
         android:hint="@string/search_hint"
-        android:maxLength="20"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        android:maxLength="40"
         android:maxLines="1"
         android:singleLine="true"
         android:layout_width="match_parent"

@@ -24,15 +24,16 @@ public class Docs {
 
     private String pub_date;
 
-    @SerializedName("document_type")
+    @SerializedName("new_desk")
     @Expose
 
-    private String document_type;
+    private String new_desk;
 
-    @SerializedName("source")
+    @SerializedName("section_name")
     @Expose
 
-    private String source;
+    private String section_name;
+
 
     @SerializedName("multimedia")
     @Expose
@@ -41,12 +42,12 @@ public class Docs {
 
     // Constructors
 
-    public Docs(String web_url, String snippet, String pub_date, String document_type, String source, List<Multimedia> multimedia) {
+    public Docs(String web_url, String snippet, String pub_date, String new_desk, String section_name, List<Multimedia> multimedia) {
         this.web_url = web_url;
         this.snippet = snippet;
         this.pub_date = pub_date;
-        this.document_type = document_type;
-        this.source = source;
+        this.new_desk = new_desk;
+        this.section_name = section_name;
         this.multimedia = multimedia;
 
     }
@@ -77,20 +78,23 @@ public class Docs {
         this.pub_date = pub_date;
     }
 
-    public String getDocument_type() {
-        return document_type;
+
+    public String getNew_desk() {
+        return new_desk;
     }
 
-    public void setDocument_type(String document_type) {
-        this.document_type = document_type;
-    }
-    public String getSource() {
-        return source;
+    public void setNew_desk(String new_desk) {
+        this.new_desk = new_desk;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public String getSection_name() {
+        return section_name;
     }
+
+    public void setSection_name(String section_name) {
+        this.section_name = section_name;
+    }
+
 
 
     public List<Multimedia> getMultimedia() {
@@ -101,13 +105,19 @@ public class Docs {
         this.multimedia = multimedia;
     }
 
-    // Method to returns 「Source」 > 「Article」 format
-    public String getSource_documentType() {
-        StringBuilder stringBuilder = new StringBuilder(document_type);
-        stringBuilder.setCharAt(0, Character.toUpperCase(stringBuilder.charAt(0)));
-        String document_typeUpper = stringBuilder.toString();
-        String outputString = source + " > " + document_typeUpper;
-        return outputString;
+    // Method to returns 「New_desk」 > 「Section_name」 format
+
+    public String getNewdesk_sectionName() {
+
+        String newDesk_sectionName = new_desk + " > " + section_name;
+        String newDesk_simple = new_desk;
+
+        if (section_name == null) {
+            return newDesk_simple;
+        } else {
+            return newDesk_sectionName;
+        }
+
     }
 
 

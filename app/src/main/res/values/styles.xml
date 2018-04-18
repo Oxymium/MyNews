@@ -27,6 +27,13 @@
         <item name="android:textColor">@color/myNewsBlack</item>
     </style>
 
+    <!-- ALERTDIALOG THEME -->
+    <style name="AlertDialog.Style" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/myNewsBlue</item>
+        <item name="android:textColorPrimary">@color/myNewsBlack</item>
+        <item name="android:background">@color/myNewsWhite</item>
+    </style>
+
     <!-- EDITTEXT THEME -->
     <style name="EditText.Theme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:textColorSecondary">@color/myNewsBlue</item>

@@ -21,7 +21,6 @@ import static org.junit.Assert.*;
  */
 public class DateConvertTest {
 
-
     @Test
     public void test_getPublished_date_converted() throws Exception {
 
@@ -48,8 +47,6 @@ public class DateConvertTest {
 
         String firstDayInput = "0001-01-01";
         String firstDayOutput = "01/01/01";
-
-
 
         String convertedDate1 = "";
         String convertedDate2 = "";

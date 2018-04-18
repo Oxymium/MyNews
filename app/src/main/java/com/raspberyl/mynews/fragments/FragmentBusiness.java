@@ -39,6 +39,8 @@ public class FragmentBusiness extends Fragment {
 
     private int BUSINESS_ANSWER_CODE;
 
+    private static final String BUSINESS_TAB_SEARCH = "source:(\"The New York Times\")" + " AND" + " news_desk:(\"Business\")";
+
     public FragmentBusiness() {
 
     }
@@ -61,7 +63,7 @@ public class FragmentBusiness extends Fragment {
 
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ResponseWrapper> call = apiService.loadBusiness(ApiKey.NYT_API_KEY, "business", "newest");
+        Call<ResponseWrapper> call = apiService.loadBusiness(ApiKey.NYT_API_KEY,  BUSINESS_TAB_SEARCH, "newest");
         call.enqueue(new Callback<com.raspberyl.mynews.model.ResponseWrapper>() {
             @Override
             public void onResponse(Call<ResponseWrapper> call, Response<ResponseWrapper> response) {
