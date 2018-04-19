@@ -22,6 +22,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
@@ -56,6 +57,8 @@ public class SearchActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private Switch mNotificationsSwitch;
     private View mHorizontalDivider;
+
+    private TextView mTextView_begin_label, mTextView_end_label;
 
     private EditText mEditText_queries,
                      mEditText_beginDate,
@@ -153,12 +156,16 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void hideBothDatePickers() {
-        // Remove the two EditText that act as DatePickers
+        // Remove the two EditText (plus their TextViews) that act as DatePickers
         mEditText_beginDate = findViewById(R.id.begin_date_edittext);
         mEditText_beginDate.setVisibility(GONE);
+        mTextView_begin_label = findViewById(R.id.begin_date_textview_label);
+        mTextView_begin_label.setVisibility(GONE);
 
         mEditText_endDate = findViewById(R.id.end_date_edittext);
         mEditText_endDate.setVisibility(GONE);
+        mTextView_end_label = findViewById(R.id.end_date_textview_label);
+        mTextView_end_label.setVisibility(GONE);
 
     }
 
@@ -304,7 +311,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void updateBeginDateLabel() {
-        String myFormat = "MM/dd/yy";
+        String myFormat = "MM/dd/yyyy";
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
 
@@ -351,7 +358,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void updateEndDateLabel() {
-        String dateFormat = "MM/dd/yy";
+        String dateFormat = "MM/dd/yyyy";
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
 

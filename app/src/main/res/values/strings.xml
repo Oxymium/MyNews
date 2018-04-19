@@ -52,6 +52,9 @@
     <string name="button_search">SEARCH</string>
     <string name="search_hint">Search query term</string>
     <string name="switch_text">Enable notifications (once per day)</string>
+    <string name="search_label_begin_date">Begin date</string>
+    <string name="search_label_end_date">End date</string>
+
 
 
 

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.raspberyl.mynews.controller.SearchActivity">
+    tools:context="com.raspberyl.mynews.controller.SearchActivity"
+    android:orientation="vertical">
 
     <include
         layout="@layout/toolbar"
@@ -22,170 +23,208 @@
         android:singleLine="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/toolbar_searchactivity"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_toStartOf="@+id/search_box6"
-        android:theme="@style/EditTextSearch.Theme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_searchactivity" />
+        android:theme="@style/EditTextSearch.Theme" />
 
-    <EditText
-        android:id="@+id/begin_date_edittext"
-        android:editable="false"
-        android:focusable="false"
-        android:layout_width="139dp"
-        android:layout_height="42dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:theme="@style/EditTextDate.Theme"
-        android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_editText" />
-
-    <EditText
-        android:id="@+id/end_date_edittext"
-        android:editable="false"
-        android:focusable="false"
-        android:layout_width="139dp"
-        android:layout_height="42dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:theme="@style/EditTextDate.Theme"
-        android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/begin_date_edittext"
-        app:layout_constraintTop_toBottomOf="@+id/search_editText" />
+        android:weightSum="3">
 
-    <CheckBox
-        android:id="@+id/search_box1"
-        android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1.5"
+            >
+
+            <TextView
+                android:id="@+id/begin_date_textview_label"
+                android:paddingStart="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_label_begin_date"
+                />
+
+            <EditText
+                android:id="@+id/begin_date_edittext"
+                android:layout_width="170dp"
+                android:layout_height="42dp"
+                android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
+                android:editable="false"
+                android:focusable="false"
+                android:theme="@style/EditTextDate.Theme"
+             />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:orientation="vertical"
+            android:layout_weight="1.5"
+
+            >
+
+            <TextView
+                android:id="@+id/end_date_textview_label"
+                android:paddingStart="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_label_end_date"
+             />
+
+            <EditText
+                android:id="@+id/end_date_edittext"
+                android:layout_width="170dp"
+                android:layout_height="42dp"
+                android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
+                android:editable="false"
+                android:focusable="false"
+                android:theme="@style/EditTextDate.Theme"
+              />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/search_editText"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="80dp"
-        android:onClick="onCheckboxClicked"
-        android:text="@string/search_box1"
-        android:theme="@style/CheckBox.Theme"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_editText" />
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:paddingStart="8dp">
 
-    <CheckBox
-        android:id="@+id/search_box2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/search_box1"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:onClick="onCheckboxClicked"
-        android:text="@string/search_box2"
-        android:theme="@style/CheckBox.Theme"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_box1" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.5">
 
-    <CheckBox
-        android:id="@+id/search_box3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/search_box2"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:onClick="onCheckboxClicked"
-        android:text="@string/search_box3"
-        android:theme="@style/CheckBox.Theme"
-        app:layout_constraintBottom_toTopOf="@+id/view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_box2" />
+            <CheckBox
+                android:id="@+id/search_box1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onCheckboxClicked"
+                android:text="@string/search_box1"
+                android:theme="@style/CheckBox.Theme" />
 
-    <CheckBox
-        android:id="@+id/search_box4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/search_box1"
-        android:layout_marginEnd="28dp"
-        android:layout_marginTop="80dp"
-        android:onClick="onCheckboxClicked"
-        android:text="@string/search_box4"
-        android:theme="@style/CheckBox.Theme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_editText" />
+            <CheckBox
+                android:id="@+id/search_box2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onCheckboxClicked"
+                android:text="@string/search_box2"
+                android:theme="@style/CheckBox.Theme" />
 
-    <CheckBox
-        android:id="@+id/search_box5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/search_box4"
-        android:layout_below="@+id/search_box4"
-        android:layout_marginTop="8dp"
-        android:onClick="onCheckboxClicked"
-        android:text="@string/search_box5"
-        android:theme="@style/CheckBox.Theme"
-        app:layout_constraintTop_toBottomOf="@+id/search_box4"
-        tools:layout_editor_absoluteX="275dp" />
+            <CheckBox
+                android:id="@+id/search_box3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onCheckboxClicked"
+                android:text="@string/search_box3"
+                android:theme="@style/CheckBox.Theme" />
 
-    <CheckBox
-        android:id="@+id/search_box6"
-        android:layout_width="wrap_content"
-        android:layout_height="33dp"
-        android:layout_alignBaseline="@+id/search_box3"
-        android:layout_alignBottom="@+id/search_box3"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="28dp"
-        android:layout_marginTop="8dp"
-        android:onClick="onCheckboxClicked"
-        android:text="@string/search_box6"
-        android:theme="@style/CheckBox.Theme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_box5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.5">
+
+            <CheckBox
+                android:id="@+id/search_box4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onCheckboxClicked"
+                android:text="@string/search_box4"
+                android:theme="@style/CheckBox.Theme" />
+
+            <CheckBox
+                android:id="@+id/search_box5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onCheckboxClicked"
+                android:text="@string/search_box5"
+                android:theme="@style/CheckBox.Theme" />
+
+            <CheckBox
+                android:id="@+id/search_box6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onCheckboxClicked"
+                android:text="@string/search_box6"
+                android:theme="@style/CheckBox.Theme" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="8dp">
 
     <View
         android:id="@+id/horizontal_divider_search"
-        android:layout_width="374dp"
-        android:layout_height="2dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_box3" />
+        android:color="@color/myNewsBlack"/>
 
-    <Button
-        android:id="@+id/button_search"
-        android:layout_width="wrap_content"
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/button_search"
-        android:theme="@style/SearchButton.Theme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/horizontal_divider_search" />
+        android:orientation="vertical">
 
-    <Switch
-        android:id="@+id/notification_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/switch_text"
-        android:theme="@style/Switch.Theme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizontal_divider_search" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:orientation="horizontal"
+            android:paddingTop="8dp">
 
 
-</android.support.constraint.ConstraintLayout>
+            <Button
+                android:id="@+id/button_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_search"
+                android:theme="@style/SearchButton.Theme"
+                android:gravity="center"
+                />
+
+        </LinearLayout>
+
+
+        <Switch
+            android:id="@+id/notification_switch"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/switch_text"
+            android:theme="@style/Switch.Theme" />
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
