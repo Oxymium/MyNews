@@ -8,6 +8,17 @@
         <item name="colorAccent">@color/myNewsYellow</item>
     </style>
 
+    <!-- NAVIGATION DRAWER THEME. -->
+    <style name="NavigationDrawer.Theme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/myNewsWhite</item>
+        <item name="android:textColorSecondary">@color/myNewsWhite</item>
+        <item name="android:background">@color/myNewsBlue</item>
+        <!-- SELECTOR HIGHLIGHT COLOR -->
+        <item name="colorControlHighlight">@color/myNewsYellow</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/navigation_drawer_activated_background</item>
+
+    </style>
+
 
     <!-- TOOLBAR THEME -->
     <style name="MyNewsToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">

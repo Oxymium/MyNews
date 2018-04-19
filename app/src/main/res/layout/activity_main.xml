@@ -26,8 +26,9 @@
        android:layout_width="match_parent"
        android:layout_height="?attr/actionBarSize"
        android:background="@color/myNewsBlue"
-       app:tabTextColor="@android:color/white"
-       app:tabMode="fixed"
+       app:tabTextColor="@color/myNewsWhite"
+        app:tabSelectedTextColor="@color/myNewsWhite"
+        app:tabMode="fixed"
        app:tabGravity="fill"
        app:tabIndicatorColor="@color/myNewsYellow"
        >
@@ -58,7 +59,11 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/activity_main_nav_header"
-        app:menu="@menu/activity_main_menu_drawer" />
+        app:menu="@menu/activity_main_menu_drawer"
+        android:theme="@style/NavigationDrawer.Theme"
+        app:itemTextColor="@color/myNewsWhite"
+
+        />
 
 
 </android.support.v4.widget.DrawerLayout>
