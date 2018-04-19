@@ -1,5 +1,6 @@
 package com.raspberyl.mynews.controller;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +33,7 @@ import com.raspberyl.mynews.model.Docs;
 import com.raspberyl.mynews.model.ResponseWrapper;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -60,11 +62,18 @@ public class SearchActivity extends AppCompatActivity {
                      mEditText_endDate;
     private Button mSearchButton;
 
+    private List<String> queriesChecked;
+
     private String mSearchTerms;
 
+    // ------------------------
+    // Queries for the API Call
+    // ------------------------
+    private String mBeginDate, mEndDate;
     private String querySearchBox1, querySearchBox2, querySearchBox3, querySearchBox4, querySearchBox5, querySearchBox6;
-
-    private String mfquery;
+    private String mQueryTextInput;
+    private String mQueryTextTrimmed;
+    private String mBundledFQuery;
 
     private List<Docs> mSearchResults;
 
@@ -84,20 +93,23 @@ public class SearchActivity extends AppCompatActivity {
         configureToolbarSearch();
 
         emptyQueryFieldValues();
-        getQueriesField();
+        fetchQueriesFromField();
 
-        emptyAllCheckboxesValues();
+        nullifyBeginDate();
+        nullifyEndDate();
 
         initializeOnClickBeginDateListener();
         initializeOnClickEndDateListener();
 
-        //getAllSearchValues();
+        emptyAllCheckboxesValues();
 
         startSearch();
 
-
     }
 
+    // -----------------------------------------------------------------
+    // Config Toolbar, and organize layout depending of receiving intent
+    // -----------------------------------------------------------------
 
     private void configureToolbarSearch() {
         //Get the toolbar (Serialise)
@@ -119,6 +131,7 @@ public class SearchActivity extends AppCompatActivity {
             case NOTIFICATIONS_ID:
                 actionBar.setTitle(R.string.notifications_title);
                 hideSearchButton();
+                hideBothDatePickers();
                 break;
         }
     }
@@ -137,17 +150,32 @@ public class SearchActivity extends AppCompatActivity {
         mHorizontalDivider = findViewById(R.id.horizontal_divider_search);
         mHorizontalDivider.setVisibility(INVISIBLE);
 
+    }
+
+    private void hideBothDatePickers() {
+        // Remove the two EditText that act as DatePickers
+        mEditText_beginDate = findViewById(R.id.begin_date_edittext);
+        mEditText_beginDate.setVisibility(GONE);
+
+        mEditText_endDate = findViewById(R.id.end_date_edittext);
+        mEditText_endDate.setVisibility(GONE);
 
     }
 
-    private void getQueriesField() {
+    // -----------------------------------------------------------------
+    // Query TextView input
+    // -----------------------------------------------------------------
+
+    private void fetchQueriesFromField() {
         mEditText_queries = findViewById(R.id.search_editText);
         mEditText_queries.addTextChangedListener(new TextWatcher()
         {
             @Override
             public void afterTextChanged(Editable mEdit)
             {
-                mfquery = mEditText_queries.getText().toString();
+                mQueryTextInput = mEditText_queries.getText().toString();
+                // Remove unnecessary spaces
+                mQueryTextTrimmed = mQueryTextInput.trim().replaceAll(" +", " ");
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count, int after){}
@@ -158,7 +186,8 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void emptyQueryFieldValues() {
-        mfquery = "";
+        mQueryTextInput = "";
+        mQueryTextTrimmed = "";
 
     }
 
@@ -185,7 +214,7 @@ public class SearchActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.search_box1:
                 if (checked) {
-                     querySearchBox1 = "news_desk:(\"arts\")";
+                     querySearchBox1 = this.getString(R.string.search_box1);
                 }
                 else
                     querySearchBox1 = "";
@@ -194,7 +223,7 @@ public class SearchActivity extends AppCompatActivity {
 
             case R.id.search_box2:
                 if (checked) {
-                    querySearchBox2 = "news_desk:(\"business\")";
+                    querySearchBox2 = this.getString(R.string.search_box2);
                 }
                 else
                     querySearchBox2 = "";
@@ -203,7 +232,7 @@ public class SearchActivity extends AppCompatActivity {
 
             case R.id.search_box3:
                 if (checked) {
-                    querySearchBox3 = "news_desk:(\"entrepreneurs\")";
+                    querySearchBox3 = this.getString(R.string.search_box3);
                 }
 
                 else
@@ -213,7 +242,7 @@ public class SearchActivity extends AppCompatActivity {
 
             case R.id.search_box4:
                 if (checked) {
-                    querySearchBox4 = "news_desk:(\"politics\")";
+                    querySearchBox4 = this.getString(R.string.search_box4);
                 }
 
                 else
@@ -223,7 +252,7 @@ public class SearchActivity extends AppCompatActivity {
 
             case R.id.search_box5:
                 if (checked) {
-                    querySearchBox5 = "news_desk:(\"sports\")";
+                    querySearchBox5 = this.getString(R.string.search_box5);
                 }
                 else
                     querySearchBox5 = "";
@@ -232,13 +261,14 @@ public class SearchActivity extends AppCompatActivity {
 
             case R.id.search_box6:
                 if (checked) {
-                    querySearchBox6 = "news_desk:(\"travel\")";
+                    querySearchBox6 = this.getString(R.string.search_box6);
                 }
                 else
                     querySearchBox6 = "";
                     break;
         }
     }
+
 
     // -----------------------------------------------------------
     // BEGIN DATE : Text View Listener + DatePicker + Label update
@@ -274,10 +304,16 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void updateBeginDateLabel() {
-        String myFormat = "MM/dd/yy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        String myFormat = "MM/dd/yy";
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
 
         mEditText_beginDate.setText(sdf.format(mCalendar.getTime()));
+        mBeginDate = sdf2.format(mCalendar.getTime());
+    }
+
+    private void nullifyBeginDate() {
+        mBeginDate = null;
     }
 
     // ---------------------------------------------------------
@@ -316,11 +352,17 @@ public class SearchActivity extends AppCompatActivity {
 
     private void updateEndDateLabel() {
         String dateFormat = "MM/dd/yy";
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
 
         mEditText_endDate.setText(sdf.format(mCalendar.getTime()));
+        mEndDate = sdf2.format(mCalendar.getTime());
+
     }
 
+    private void nullifyEndDate() {
+        mEndDate = null;
+    }
 
     // ------------------------------------------------
     // AlertDialog Errors
@@ -384,8 +426,31 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     // ------------------------------
+    // Bundled values to pass to Call
+    // ------------------------------
+
+    private void fetchBundledStringFQueries() {
+        String mFQueryReformated = "news_desk:(";
+        List<String> news_desk = new ArrayList<>();
+        news_desk.add(querySearchBox1);
+        news_desk.add(querySearchBox2);
+        news_desk.add(querySearchBox3);
+        news_desk.add(querySearchBox4);
+        news_desk.add(querySearchBox5);
+        news_desk.add(querySearchBox6);
+
+        for(int i = 0;  i < news_desk.size()-1; i++){
+            mFQueryReformated = mFQueryReformated.concat('"'+news_desk.get(i)+'"'+" ");
+        }
+        mBundledFQuery = mFQueryReformated.concat('"'+news_desk.get(news_desk.size()-1)+'"'+")");
+    }
+
+
+
+    // ------------------------------
     // Init Search form Search Button
     // ------------------------------
+
 
     private void startSearch() {
 
@@ -396,14 +461,14 @@ public class SearchActivity extends AppCompatActivity {
                         // Check that at least 1 Checkbox is checked, notify if none are
 
                         if (querySearchBox1.isEmpty() && querySearchBox2.isEmpty() && querySearchBox3.isEmpty() && querySearchBox4.isEmpty() && querySearchBox5.isEmpty() && querySearchBox6.isEmpty()
-                                || mfquery.isEmpty()) {
+                                || mQueryTextInput.isEmpty()) {
 
                             if (querySearchBox1.isEmpty() && querySearchBox2.isEmpty() && querySearchBox3.isEmpty() && querySearchBox4.isEmpty() && querySearchBox5.isEmpty() && querySearchBox6.isEmpty()) {
 
                                 notifyEmptyCheckboxesError();
                             }
 
-                            if (mfquery.isEmpty()) {
+                            if (mQueryTextInput.isEmpty()) {
 
                                 notifyEmptyQueryfieldError();
                             }
@@ -412,7 +477,6 @@ public class SearchActivity extends AppCompatActivity {
 
                             searchQuery();
                         }
-
 
                     }
                 });
@@ -425,8 +489,12 @@ public class SearchActivity extends AppCompatActivity {
 
     private void searchQuery() {
 
+        fetchBundledStringFQueries();
+
+        System.out.println(mBundledFQuery);
+
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ResponseWrapper> call = apiService.loadSearch(ApiKey.NYT_API_KEY, mfquery, this.getString(R.string.newest_sort_order), "20171214"   , "20180303");
+        Call<ResponseWrapper> call = apiService.loadSearch(ApiKey.NYT_API_KEY, mQueryTextTrimmed, mBundledFQuery, this.getString(R.string.newest_sort_order), mBeginDate, mEndDate);
         call.enqueue(new Callback<com.raspberyl.mynews.model.ResponseWrapper>() {
             @Override
             public void onResponse(Call<ResponseWrapper> call, Response<ResponseWrapper> response) {
@@ -437,7 +505,6 @@ public class SearchActivity extends AppCompatActivity {
 
                     // If List is empty, then display Error message
                     if (mSearchResults.isEmpty()) {
-
                         notifyEmptySearchResultsError();
                     }
 
@@ -466,6 +533,7 @@ public class SearchActivity extends AppCompatActivity {
 
                 }else{
 
+                System.out.println("ERROR 1");
                 }
             }
 
@@ -473,6 +541,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onFailure(Call<ResponseWrapper> call, Throwable t) {
 
                 Log.e(TAG, t.toString());
+                System.out.println("ERROR 2");
 
             }
         });

@@ -24,6 +24,7 @@ public interface ApiInterface {
     // Search
     @GET("svc/search/v2/articlesearch.json")
     Call<ResponseWrapper> loadSearch(@Query("api-key") String apiKey,
+                                     @Query("q") String query,
                                      @Query("fq") String fQuery,
                                      @Query("sort") String sort,
                                      @Query("begin_date") String beginDate,

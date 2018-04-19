@@ -75,8 +75,8 @@ public class FragmentBusiness extends Fragment {
 
 
                 // Json output into console
-                Log.v("「Business」response", (Integer.toString(BUSINESS_ANSWER_CODE)));
-                Log.w("Full「Business」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
+                //Log.v("「Business」response", (Integer.toString(BUSINESS_ANSWER_CODE)));
+                //Log.w("Full「Business」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
 
 
                 mDocsAdapter = new DocsAdapter(mBusinessList, getContext());
@@ -94,6 +94,8 @@ public class FragmentBusiness extends Fragment {
 
                 }else{
 
+                    System.out.println("ERROR");
+
                 }
 
 
@@ -103,6 +105,7 @@ public class FragmentBusiness extends Fragment {
             public void onFailure(Call<ResponseWrapper> call, Throwable t) {
 
                 Log.e(TAG, t.toString());
+                System.out.println("ERROR 2");
 
             }
         });
