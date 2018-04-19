@@ -17,6 +17,12 @@
     <string name="toolbar_string_help">Help</string>
     <string name="toolbar_string_about">About</string>
 
+    <!-- NavigationDrawer Strings -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_first_category">News</string>
+    <string name="navigation_drawer_second_category">Options</string>
+
     <!-- Tab names Strings -->
     <string name="tab_name_1">Top Stories</string>
     <string name="tab_name_2">Most Popular</string>
@@ -34,7 +40,6 @@
     <string name="alertdialog_content_empty_checkboxes_search">At least <b>ONE</b> category must be checked before starting a search</string>
     <string name="alertdialog_content_empty_query_search">At least <b>ONE</b> word must be inserted before starting a search</string>
     <string name="alertdialog_content_empty_results_search">No search results found, try again</string>
-
 
     <!-- SearchActivity/Notifications Strings -->
     <string name="news_desk_format"></string>

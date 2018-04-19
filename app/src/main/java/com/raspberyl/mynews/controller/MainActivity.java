@@ -3,9 +3,13 @@ package com.raspberyl.mynews.controller;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,12 +25,16 @@ import com.raspberyl.mynews.fragments.FragmentMostPopular;
 import com.raspberyl.mynews.fragments.FragmentTopStories;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
 
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private ViewPagerAdapter mViewPagerAdapter;
+    private DrawerLayout mDrawerLayout;
+    private NavigationView mNavigationView;
+
 
     public static final String BUNDLED_EXTRA = "BUNDLED_EXTRA";
     public static final String SEARCH_ID = "9876";
@@ -38,11 +46,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.configureToolbar();
 
         mTabLayout = findViewById(R.id.tablayout);
         mViewPager = findViewById(R.id.viewpager);
 
+        this.configureToolbar();
+        this.configureDrawerLayout();
+        this.configureNavigationView();
+        this.configureViewPager();
+
+    }
+
+    public void configureViewPager() {
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         // Required to keep tabs in memory (otherwise, 1st one will be destroyed to free memory when 3rd is called)
         mViewPager.setOffscreenPageLimit(2);
@@ -55,11 +70,63 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(mViewPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
 
-        // Remove shadow from action bar
         ActionBar mActionBar = getSupportActionBar();
         mActionBar.setElevation(0);
 
+    }
 
+    @Override
+    public void onBackPressed() {
+        // 5 - Handle back click to close menu
+        if (this.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+
+        // 4 - Handle Navigation Item Click
+        int id = item.getItemId();
+
+        switch (id){
+
+            case R.id.activity_main_drawer_tab_1:
+                TabLayout.Tab tab0 = mTabLayout.getTabAt(0);
+                tab0.select();
+                break;
+
+            case R.id.activity_main_drawer_tab_2 :
+                TabLayout.Tab tab1 = mTabLayout.getTabAt(1);
+                tab1.select();
+
+                break;
+
+            case R.id.activity_main_drawer_tab_3:
+                TabLayout.Tab tab2 = mTabLayout.getTabAt(2);
+                tab2.select();
+                break;
+
+            case R.id.activity_main_drawer_search:
+                break;
+
+            case R.id.activity_main_drawer_help:
+                onHelpSelected();
+                break;
+
+            case R.id.activity_main_drawer_about:
+                onAboutSelected();
+                break;
+
+            default:
+                break;
+        }
+
+        this.mDrawerLayout.closeDrawer(GravityCompat.START);
+
+        return true;
     }
 
     @Override
@@ -75,7 +142,23 @@ public class MainActivity extends AppCompatActivity {
         // Sets the Toolbar
         setSupportActionBar(mToolbar);
 
+
     }
+
+    // 2 - Configure Drawer Layout
+    private void configureDrawerLayout(){
+        this.mDrawerLayout = (DrawerLayout) findViewById(R.id.activity_main_drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
+    // 3 - Configure NavigationView
+    private void configureNavigationView(){
+        this.mNavigationView = (NavigationView) findViewById(R.id.activity_main_nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

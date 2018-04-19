@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/myNewsYellow</item>
     </style>
 
+
     <!-- TOOLBAR THEME -->
     <style name="MyNewsToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <!-- Color of the title text in the Toolbar -->

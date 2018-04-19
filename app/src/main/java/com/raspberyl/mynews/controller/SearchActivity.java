@@ -90,20 +90,20 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        configureToolbarSearch();
+        this.configureToolbarSearch();
 
-        emptyQueryFieldValues();
-        fetchQueriesFromField();
+        this.emptyQueryFieldValues();
+        this.fetchQueriesFromField();
 
-        nullifyBeginDate();
-        nullifyEndDate();
+        this.nullifyBeginDate();
+        this.nullifyEndDate();
 
-        initializeOnClickBeginDateListener();
-        initializeOnClickEndDateListener();
+        this.initializeOnClickBeginDateListener();
+        this.initializeOnClickEndDateListener();
 
-        emptyAllCheckboxesValues();
+        this.emptyAllCheckboxesValues();
 
-        startSearch();
+        this.startSearch();
 
     }
 
