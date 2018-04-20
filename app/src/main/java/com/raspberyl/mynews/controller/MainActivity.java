@@ -1,6 +1,5 @@
 package com.raspberyl.mynews.controller;
 
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
@@ -54,9 +53,57 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureDrawerLayout();
         this.configureNavigationView();
         this.configureViewPager();
+        this.setDefaultNavigationDrawerHighlightSelection();
 
     }
 
+    // ------------------------------------------------------
+    // NavigationDrawer default/match tab highlight selection
+    // ------------------------------------------------------
+    public void setDefaultNavigationDrawerHighlightSelection() {
+
+        mNavigationView.setCheckedItem(R.id.activity_main_drawer_tab_1);
+
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+
+                switch (position) {
+                    case 0:
+                        mNavigationView.setCheckedItem(R.id.activity_main_drawer_tab_1);
+                        break;
+
+                    case 1:
+                        mNavigationView.setCheckedItem(R.id.activity_main_drawer_tab_2);
+                        break;
+
+                    case 2:
+                        mNavigationView.setCheckedItem(R.id.activity_main_drawer_tab_3);
+
+                        break;
+
+                    default:
+
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+    }
+
+
+    // ------------------------------------------
+    // Init TabLayout, ViewPager & add Fragments
+    // ------------------------------------------
     public void configureViewPager() {
         mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         // Required to keep tabs in memory (otherwise, 1st one will be destroyed to free memory when 3rd is called)
@@ -74,6 +121,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mActionBar.setElevation(0);
 
     }
+
+    // ------------------------
+    // NavigationDrawer config
+    // ------------------------
 
     @Override
     public void onBackPressed() {
@@ -134,21 +185,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate menu and add to the Toolbar
-        getMenuInflater().inflate(R.menu.menu_activity_main, menu);
-        return true;
-    }
 
-    private void configureToolbar(){
-        // Get the toolbar view inside the activity layout
-        mToolbar = findViewById(R.id.toolbar);
-        // Sets the Toolbar
-        setSupportActionBar(mToolbar);
-
-
-    }
 
     // 2 - Configure Drawer Layout
     private void configureDrawerLayout(){
@@ -164,6 +201,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mNavigationView.setNavigationItemSelectedListener(this);
     }
 
+    // ------------------------
+    // Toolbar init & config
+    // ------------------------
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate menu and add to the Toolbar
+        getMenuInflater().inflate(R.menu.menu_activity_main, menu);
+        return true;
+    }
+
+    private void configureToolbar(){
+        // Get the toolbar view inside the activity layout
+        mToolbar = findViewById(R.id.toolbar);
+        // Sets the Toolbar
+        setSupportActionBar(mToolbar);
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

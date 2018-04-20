@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -49,8 +50,11 @@ import static android.view.View.INVISIBLE;
 import static com.raspberyl.mynews.controller.MainActivity.BUNDLED_EXTRA;
 import static com.raspberyl.mynews.controller.MainActivity.NOTIFICATIONS_ID;
 import static com.raspberyl.mynews.controller.MainActivity.SEARCH_ID;
+import static java.lang.Boolean.FALSE;
 
 public class SearchActivity extends AppCompatActivity {
+
+    private ActionBar mActionBar;
 
     private String mBundledValue;
 
@@ -95,18 +99,6 @@ public class SearchActivity extends AppCompatActivity {
 
         this.configureToolbarSearch();
 
-        this.emptyQueryFieldValues();
-        this.fetchQueriesFromField();
-
-        this.nullifyBeginDate();
-        this.nullifyEndDate();
-
-        this.initializeOnClickBeginDateListener();
-        this.initializeOnClickEndDateListener();
-
-        this.emptyAllCheckboxesValues();
-
-        this.startSearch();
 
     }
 
@@ -120,23 +112,90 @@ public class SearchActivity extends AppCompatActivity {
         //Set the toolbar
         setSupportActionBar(mToolbar);
         // Get a support ActionBar corresponding to this toolbar
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar mActionBar = getSupportActionBar();
         // Enable back button
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
         // Fetch intent to determine origin
         mBundledValue = getIntent().getStringExtra(BUNDLED_EXTRA);
 
         switch (mBundledValue) {
             case SEARCH_ID:
-                actionBar.setTitle(R.string.search_title);
-                hideNotificationsSwitch();
+                // Change ActionBar title to match SEARCH, and hide UI elements from NOTIFICATIONS
+                mActionBar.setTitle(R.string.search_title);
+                displaySearchInterfaceElements();
+                // Reset all search values to default
+                emptyQueryFieldValues();
+                nullifyBeginDate();
+                nullifyEndDate();
+                emptyAllCheckboxesValues();
+                // Attach listeners to DateField & TextQueries
+                initializeOnClickBeginDateListener();
+                initializeOnClickEndDateListener();
+                fetchQueriesFromField();
+                // Search
+                startSearch();
+
+
                 break;
             case NOTIFICATIONS_ID:
-                actionBar.setTitle(R.string.notifications_title);
-                hideSearchButton();
-                hideBothDatePickers();
+                // Change ActionBar title to match NOTIFICATIONS, and hide UI elements from SEARCH
+                mActionBar.setTitle(R.string.notifications_title);
+                //
+                displayNotificationsInterfaceElements();
+                // Reset
+                emptyQueryFieldValues();
+                emptyAllCheckboxesValues();
+                fetchQueriesFromField();
+                //
+                setNotificationsSwitchListener();
+
                 break;
         }
+
+    }
+
+    // ---------------------------------
+    // Display/Hide UI elements methods
+    // ---------------------------------
+
+    private void displaySearchInterfaceElements() {
+        hideNotificationsHorizontalDivider();
+        hideNotificationsSwitch();
+    }
+
+    private void displayNotificationsInterfaceElements() {
+        hideSearchBeginDateLabel();
+        hideSearchBeginDatePicker();
+        hideSearchEndDateLabel();
+        hideSearchEndDatePicker();
+        hideSearchButton();
+    }
+
+    private void hideSearchBeginDateLabel() {
+        mTextView_begin_label = findViewById(R.id.begin_date_textview_label);
+        mTextView_begin_label.setVisibility(GONE);
+    }
+
+    private void hideSearchBeginDatePicker() {
+        // Remove the two EditText (plus their TextViews) that act as DatePickers
+        mEditText_beginDate = findViewById(R.id.begin_date_edittext);
+        mEditText_beginDate.setVisibility(GONE);
+    }
+
+    private void hideSearchEndDateLabel() {
+        mTextView_end_label = findViewById(R.id.end_date_textview_label);
+        mTextView_end_label.setVisibility(GONE);
+    }
+
+    private void hideSearchEndDatePicker() {
+        mEditText_endDate = findViewById(R.id.end_date_edittext);
+        mEditText_endDate.setVisibility(GONE);
+    }
+
+    private void hideNotificationsHorizontalDivider() {
+        // Hides the horizontal divider
+        mHorizontalDivider = findViewById(R.id.horizontal_divider_search);
+        mHorizontalDivider.setVisibility(GONE);
     }
 
     private void hideSearchButton() {
@@ -148,26 +207,7 @@ public class SearchActivity extends AppCompatActivity {
     private void hideNotificationsSwitch() {
         // Remove the Notifications switch
         mNotificationsSwitch = findViewById(R.id.notification_switch);
-        mNotificationsSwitch.setVisibility(GONE);
-        // Hides the horizontal divider
-        mHorizontalDivider = findViewById(R.id.horizontal_divider_search);
-        mHorizontalDivider.setVisibility(INVISIBLE);
-
-    }
-
-    private void hideBothDatePickers() {
-        // Remove the two EditText (plus their TextViews) that act as DatePickers
-        mEditText_beginDate = findViewById(R.id.begin_date_edittext);
-        mEditText_beginDate.setVisibility(GONE);
-        mTextView_begin_label = findViewById(R.id.begin_date_textview_label);
-        mTextView_begin_label.setVisibility(GONE);
-
-        mEditText_endDate = findViewById(R.id.end_date_edittext);
-        mEditText_endDate.setVisibility(GONE);
-        mTextView_end_label = findViewById(R.id.end_date_textview_label);
-        mTextView_end_label.setVisibility(GONE);
-
-    }
+        mNotificationsSwitch.setVisibility(GONE); }
 
     // -----------------------------------------------------------------
     // Query TextView input
@@ -458,6 +498,44 @@ public class SearchActivity extends AppCompatActivity {
     // Init Search form Search Button
     // ------------------------------
 
+    private boolean conditionsCheck() {
+
+        if (querySearchBox1.isEmpty() && querySearchBox2.isEmpty() && querySearchBox3.isEmpty() && querySearchBox4.isEmpty() && querySearchBox5.isEmpty() && querySearchBox6.isEmpty()
+                || mQueryTextInput.isEmpty()) {
+
+            if (querySearchBox1.isEmpty() && querySearchBox2.isEmpty() && querySearchBox3.isEmpty() && querySearchBox4.isEmpty() && querySearchBox5.isEmpty() && querySearchBox6.isEmpty()) {
+                return false;
+            }
+
+            if (mQueryTextInput.isEmpty()) {
+                return false;
+            }
+
+        }else{
+            return true;
+        }
+
+        return true;
+    }
+
+    private void callErrorMessages() {
+
+        if (querySearchBox1.isEmpty() && querySearchBox2.isEmpty() && querySearchBox3.isEmpty() && querySearchBox4.isEmpty() && querySearchBox5.isEmpty() && querySearchBox6.isEmpty()
+                || mQueryTextInput.isEmpty()) {
+
+            if (querySearchBox1.isEmpty() && querySearchBox2.isEmpty() && querySearchBox3.isEmpty() && querySearchBox4.isEmpty() && querySearchBox5.isEmpty() && querySearchBox6.isEmpty()) {
+
+                notifyEmptyCheckboxesError();
+            }
+
+            if (mQueryTextInput.isEmpty()) {
+
+                notifyEmptyQueryfieldError();
+            }
+        }
+    }
+
+
 
     private void startSearch() {
 
@@ -466,29 +544,40 @@ public class SearchActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     public void onClick(View view) {
                         // Check that at least 1 Checkbox is checked, notify if none are
-
-                        if (querySearchBox1.isEmpty() && querySearchBox2.isEmpty() && querySearchBox3.isEmpty() && querySearchBox4.isEmpty() && querySearchBox5.isEmpty() && querySearchBox6.isEmpty()
-                                || mQueryTextInput.isEmpty()) {
-
-                            if (querySearchBox1.isEmpty() && querySearchBox2.isEmpty() && querySearchBox3.isEmpty() && querySearchBox4.isEmpty() && querySearchBox5.isEmpty() && querySearchBox6.isEmpty()) {
-
-                                notifyEmptyCheckboxesError();
-                            }
-
-                            if (mQueryTextInput.isEmpty()) {
-
-                                notifyEmptyQueryfieldError();
-                            }
-
-                        }else{
-
+                        if (conditionsCheck())
                             searchQuery();
-                        }
-
+                        else
+                            callErrorMessages();
                     }
                 });
 
     }
+
+    private void setNotificationsSwitchListener() {
+
+        mNotificationsSwitch = findViewById(R.id.notification_switch);
+        mNotificationsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        if (conditionsCheck()) {
+                            Toast.makeText(getBaseContext(), "SUCCESS", Toast.LENGTH_LONG).show();
+                            mNotificationsSwitch.setChecked(true);
+                        }
+
+                        // Reset Notifications Switch to OFF state if minimum requirements are not met
+                        else {
+                            callErrorMessages();
+                            mNotificationsSwitch.setChecked(false);
+                        }
+                    }
+
+                    else {
+                        mNotificationsSwitch.setChecked(false);
+                    }
+
+                }
+            });
+        }
 
     // --------
     // API Call
