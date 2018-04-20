@@ -1,14 +1,17 @@
 package com.raspberyl.mynews.controller;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -33,6 +36,7 @@ import com.raspberyl.mynews.API.ApiKey;
 import com.raspberyl.mynews.R;
 import com.raspberyl.mynews.model.Docs;
 import com.raspberyl.mynews.model.ResponseWrapper;
+import com.raspberyl.mynews.utils.DividerItemDecoration;
 import com.raspberyl.mynews.utils.SharedPreferencesUtils;
 
 import java.text.SimpleDateFormat;
@@ -52,6 +56,7 @@ import static com.raspberyl.mynews.controller.MainActivity.BUNDLED_EXTRA;
 import static com.raspberyl.mynews.controller.MainActivity.NOTIFICATIONS_ID;
 import static com.raspberyl.mynews.controller.MainActivity.SEARCH_ID;
 import static java.lang.Boolean.FALSE;
+import static java.util.Calendar.DAY_OF_YEAR;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -73,8 +78,6 @@ public class SearchActivity extends AppCompatActivity {
     private Button mSearchButton;
 
     private String mSearchLastDocDate;
-
-    private static final String SHARED_PREFERENCES_LAST_SAVED_DATE = "SHARED_PREFERENCES_LAST_SAVED_DATE";
 
     private List<String> queriesChecked;
 
@@ -539,9 +542,11 @@ public class SearchActivity extends AppCompatActivity {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
                         if (checkQueryRequirements()) {
-                            Toast.makeText(getBaseContext(), "SUCCESS", Toast.LENGTH_LONG).show();
                             mNotificationsSwitch.setChecked(true);
                             searchNotificationsApiCall();
+                            // START
+
+
                         }
 
                         // Reset Notifications Switch to OFF state if minimum requirements are not met
@@ -597,10 +602,6 @@ public class SearchActivity extends AppCompatActivity {
                     }
 
                     else {
-                    // Json output into console
-                    Log.v("「Search」response", (Integer.toString(SEARCH_ANSWER_CODE)));
-                    Log.w("Full「Search」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
-
 
                     setContentView(R.layout.article_recyclerview);
                     mRecyclerView = findViewById(R.id.recyclerview_layout);
@@ -611,10 +612,8 @@ public class SearchActivity extends AppCompatActivity {
 
                     // Add horizontal divider to the Recyclerview
 
-                    //DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
-                            //mRecyclerView.getContext(),
-                            //DividerItemDecoration.VERTICAL);
-
+                        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), R.drawable.custom_divider);
+                        mRecyclerView.addItemDecoration(mDividerItemDecoration);
                     //mRecyclerView.addItemDecoration(mDividerItemDecoration);
 
                     }
@@ -652,13 +651,20 @@ public class SearchActivity extends AppCompatActivity {
 
                     mSearchResults = response.body().getResponse().getDocs();
                     mSearchLastDocDate = response.body().getResponse().getDocs().get(0).getPub_date();
+                    System.out.println(mSearchLastDocDate);
+                    SharedPreferencesUtils.saveString(SearchActivity.this, MainActivity.SHARED_PREFERENCES_LAST_SAVED_DATE, mSearchLastDocDate);
+
+                    //Log.v("「Search」response", (Integer.toString(SEARCH_ANSWER_CODE)));
+                    //Log.w("Full「Search」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
+                    //SharedPreferencesUtils.saveString(getBaseContext(), SHARED_PREFERENCES_LAST_SAVED_DATE, mSearchLastDocDate);
+
+                    DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
+                            mRecyclerView.getContext(), R.drawable.custom_divider);
+                    mRecyclerView.addItemDecoration(mDividerItemDecoration);
 
                     // If List is empty, then display Error message
                     if (mSearchResults.isEmpty()) {
-                        notifyEmptySearchResultsError();
-                    }
-
-                    SharedPreferencesUtils.saveString(getBaseContext(), SHARED_PREFERENCES_LAST_SAVED_DATE, mSearchLastDocDate);
+                        notifyEmptySearchResultsError();}
 
                 }else{
 
@@ -676,6 +682,34 @@ public class SearchActivity extends AppCompatActivity {
         });
 
     }
+
+    // ------------------------------------------------
+    // AlarmManager
+    // ------------------------------------------------
+
+    private void scheduleNotification() {
+    Calendar mCalendar = Calendar.getInstance();
+    mCalendar.set(Calendar.HOUR_OF_DAY, 7); // For 1 PM or 2 PM
+    mCalendar.set(Calendar.MINUTE, 0);
+    mCalendar.set(Calendar.SECOND, 0);
+    mCalendar.set(DAY_OF_YEAR, 1);
+
+    PendingIntent pi = PendingIntent.getService(getBaseContext(), 0, new Intent(getBaseContext(), SearchActivity.class),PendingIntent.FLAG_UPDATE_CURRENT);
+    AlarmManager am = (AlarmManager) getBaseContext().getSystemService(Context.ALARM_SERVICE);
+    am.setRepeating(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(),
+    AlarmManager.INTERVAL_DAY, pi);
+    }
+
+    // Show Notification if new article is up
+    private void showNotification(View view) {
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setContentTitle("New article available");
+        builder.setContentText("Test");
+        builder.setTicker("Alert new message");
+        builder.setSmallIcon(R.drawable.mn_navigation_drawer_logo);
+        builder.build();
+    }
+
 
     // ------------------------------------------------
     // AlertDialog Errors

@@ -17,11 +17,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.raspberyl.mynews.R;
 import com.raspberyl.mynews.fragments.FragmentBusiness;
 import com.raspberyl.mynews.fragments.FragmentMostPopular;
 import com.raspberyl.mynews.fragments.FragmentTopStories;
+import com.raspberyl.mynews.utils.SharedPreferencesUtils;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,6 +35,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ViewPagerAdapter mViewPagerAdapter;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
+
+    private String mStringTest;
+
+    public static final String SHARED_PREFERENCES_LAST_SAVED_DATE = "SHARED_PREFERENCES_LAST_SAVED_DATE";
 
 
     public static final String BUNDLED_EXTRA = "BUNDLED_EXTRA";
@@ -55,8 +61,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureViewPager();
         this.setDefaultNavigationDrawerHighlightSelection();
 
+        this.testSharedPreferences();
+
     }
 
+    public void testSharedPreferences() {
+        String test = SharedPreferencesUtils.loadString(MainActivity.this, MainActivity.SHARED_PREFERENCES_LAST_SAVED_DATE, mStringTest);
+        Toast.makeText(MainActivity.this, test, Toast.LENGTH_LONG).show();
+    }
     // ------------------------------------------------------
     // NavigationDrawer default/match tab highlight selection
     // ------------------------------------------------------

@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
-import com.google.gson.Gson;
-
 import static android.content.Context.MODE_PRIVATE;
 
 public class SharedPreferencesUtils {

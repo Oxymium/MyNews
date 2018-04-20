@@ -20,6 +20,7 @@ import com.raspberyl.mynews.R;
 import com.raspberyl.mynews.controller.ArticleAdapter;
 import com.raspberyl.mynews.model.Article;
 import com.raspberyl.mynews.model.ArticleWrapper;
+import com.raspberyl.mynews.utils.DividerItemDecoration;
 
 import java.util.List;
 
@@ -78,14 +79,9 @@ public class FragmentMostPopular extends Fragment {
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     mRecyclerView.setAdapter(mArticleAdapter);
 
-
-                    // Add horizontal divider to the Recyclerview
-
-                    //DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
-                    //mRecyclerView.getContext(),
-                    //DividerItemDecoration.VERTICAL);
-
-                    //mRecyclerView.addItemDecoration(mDividerItemDecoration); */
+                    DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
+                    mRecyclerView.getContext(), R.drawable.custom_divider);
+                    mRecyclerView.addItemDecoration(mDividerItemDecoration);
 
                 }else{
 

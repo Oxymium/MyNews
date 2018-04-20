@@ -28,6 +28,8 @@
             android:value=".controller.MainActivity" />
 
         <activity android:name=".controller.WebViewActivity"></activity>
+
+        <receiver android:name=".controller.NotificationsPublisher" android:process=":remote" />
     </application>
 
 </manifest>

@@ -4,7 +4,6 @@ package com.raspberyl.mynews.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +20,7 @@ import com.raspberyl.mynews.R;
 import com.raspberyl.mynews.controller.DocsAdapter;
 import com.raspberyl.mynews.model.Docs;
 import com.raspberyl.mynews.model.ResponseWrapper;
+import com.raspberyl.mynews.utils.DividerItemDecoration;
 
 import java.util.List;
 
@@ -86,10 +86,7 @@ public class FragmentBusiness extends Fragment {
 
                 // Add horizontal divider to the Recyclerview
 
-                DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
-                mRecyclerView.getContext(),
-                DividerItemDecoration.VERTICAL);
-
+                DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), R.drawable.custom_divider);
                 mRecyclerView.addItemDecoration(mDividerItemDecoration);
 
                 }else{
