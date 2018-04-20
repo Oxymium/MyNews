@@ -42,7 +42,6 @@
     <string name="alertdialog_content_empty_results_search">No search results found, try again</string>
 
     <!-- SearchActivity/Notifications Strings -->
-    <string name="news_desk_format"></string>
     <string name="search_box1">Arts</string>
     <string name="search_box2">Business</string>
     <string name="search_box3">Entrepreneurs</string>

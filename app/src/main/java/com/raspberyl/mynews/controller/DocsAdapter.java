@@ -83,12 +83,19 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.MyViewHolder> 
             }
         });
 
-        if(docs.getMultimedia() != null && docs.getMultimedia().size() > 0) {
-            String imageUrl2 = docs.getMultimedia().get(2).getUrl();
+        if(docs.getMultimedia() != null &&  docs.getMultimedia().size() > 0 ) {
+
+            String imageUrl;
+            // Tries to get the standard image URL, but older articles have only 1 or 2 images
+            try {
+                imageUrl = docs.getMultimedia().get(2).getUrl();
+            }catch (IndexOutOfBoundsException e) {
+                imageUrl = docs.getMultimedia().get(0).getUrl();
+            }
 
 
-                if (!TextUtils.isEmpty(imageUrl2)) {
-                    Picasso.get().load("https://www.nytimes.com/"+ imageUrl2)
+                if (!TextUtils.isEmpty(imageUrl)) {
+                    Picasso.get().load("https://www.nytimes.com/"+ imageUrl)
                             .resize(250,
                                     250)
                             .into(holder.thumbnail);

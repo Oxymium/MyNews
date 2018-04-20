@@ -33,6 +33,7 @@ import com.raspberyl.mynews.API.ApiKey;
 import com.raspberyl.mynews.R;
 import com.raspberyl.mynews.model.Docs;
 import com.raspberyl.mynews.model.ResponseWrapper;
+import com.raspberyl.mynews.utils.SharedPreferencesUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -64,10 +65,16 @@ public class SearchActivity extends AppCompatActivity {
 
     private TextView mTextView_begin_label, mTextView_end_label;
 
+    private CheckBox mCheckBox1, mCheckBox2, mCheckBox3, mCheckBox4, mCheckBox5, mCheckBox6;
+
     private EditText mEditText_queries,
                      mEditText_beginDate,
                      mEditText_endDate;
     private Button mSearchButton;
+
+    private String mSearchLastDocDate;
+
+    private static final String SHARED_PREFERENCES_LAST_SAVED_DATE = "SHARED_PREFERENCES_LAST_SAVED_DATE";
 
     private List<String> queriesChecked;
 
@@ -133,14 +140,13 @@ public class SearchActivity extends AppCompatActivity {
                 initializeOnClickEndDateListener();
                 fetchQueriesFromField();
                 // Search
-                startSearch();
+                startSearchFromSearchButton();
 
 
                 break;
             case NOTIFICATIONS_ID:
                 // Change ActionBar title to match NOTIFICATIONS, and hide UI elements from SEARCH
                 mActionBar.setTitle(R.string.notifications_title);
-                //
                 displayNotificationsInterfaceElements();
                 // Reset
                 emptyQueryFieldValues();
@@ -158,11 +164,13 @@ public class SearchActivity extends AppCompatActivity {
     // Display/Hide UI elements methods
     // ---------------------------------
 
+    // Hides Notifications elements
     private void displaySearchInterfaceElements() {
         hideNotificationsHorizontalDivider();
         hideNotificationsSwitch();
     }
 
+    // Hides Search elements
     private void displayNotificationsInterfaceElements() {
         hideSearchBeginDateLabel();
         hideSearchBeginDatePicker();
@@ -171,41 +179,43 @@ public class SearchActivity extends AppCompatActivity {
         hideSearchButton();
     }
 
+    // Hides Text label: "Begin date"
     private void hideSearchBeginDateLabel() {
         mTextView_begin_label = findViewById(R.id.begin_date_textview_label);
         mTextView_begin_label.setVisibility(GONE);
     }
 
+    // Hides TextView: "Begin date"
     private void hideSearchBeginDatePicker() {
-        // Remove the two EditText (plus their TextViews) that act as DatePickers
         mEditText_beginDate = findViewById(R.id.begin_date_edittext);
         mEditText_beginDate.setVisibility(GONE);
     }
 
+    // Hides Text label: "End date"
     private void hideSearchEndDateLabel() {
         mTextView_end_label = findViewById(R.id.end_date_textview_label);
         mTextView_end_label.setVisibility(GONE);
     }
 
+    // Hides TextView: "End date"
     private void hideSearchEndDatePicker() {
         mEditText_endDate = findViewById(R.id.end_date_edittext);
         mEditText_endDate.setVisibility(GONE);
     }
 
+    // Hides View that acts as an HorizontalDivider
     private void hideNotificationsHorizontalDivider() {
-        // Hides the horizontal divider
         mHorizontalDivider = findViewById(R.id.horizontal_divider_search);
         mHorizontalDivider.setVisibility(GONE);
     }
 
+    // Hides the Search button
     private void hideSearchButton() {
-        // Remove the Search button
         mSearchButton = findViewById(R.id.button_search);
         mSearchButton.setVisibility(GONE);
     }
-
+    // Hides the Notifications switch
     private void hideNotificationsSwitch() {
-        // Remove the Notifications switch
         mNotificationsSwitch = findViewById(R.id.notification_switch);
         mNotificationsSwitch.setVisibility(GONE); }
 
@@ -213,10 +223,12 @@ public class SearchActivity extends AppCompatActivity {
     // Query TextView input
     // -----------------------------------------------------------------
 
+    // Fetch Text from the query field
     private void fetchQueriesFromField() {
         mEditText_queries = findViewById(R.id.search_editText);
         mEditText_queries.addTextChangedListener(new TextWatcher()
         {
+            // Each time a character is input, it will update the String variable
             @Override
             public void afterTextChanged(Editable mEdit)
             {
@@ -232,6 +244,7 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    // Initialize text variables with empty values
     private void emptyQueryFieldValues() {
         mQueryTextInput = "";
         mQueryTextTrimmed = "";
@@ -242,8 +255,22 @@ public class SearchActivity extends AppCompatActivity {
     // CheckBoxes - Listeners & values
     // --------------------------------
 
+    // Initialize Checkboxes to UNCHECKED position, and set their associated variables with empty values
     public void emptyAllCheckboxesValues () {
-        // Initialize all checkboxes with empty values
+        mCheckBox1 = findViewById(R.id.search_box1);
+        mCheckBox2 = findViewById(R.id.search_box2);
+        mCheckBox3 = findViewById(R.id.search_box3);
+        mCheckBox4 = findViewById(R.id.search_box4);
+        mCheckBox5 = findViewById(R.id.search_box5);
+        mCheckBox6 = findViewById(R.id.search_box6);
+
+        mCheckBox1.setChecked(false);
+        mCheckBox2.setChecked(false);
+        mCheckBox3.setChecked(false);
+        mCheckBox4.setChecked(false);
+        mCheckBox5.setChecked(false);
+        mCheckBox6.setChecked(false);
+
         querySearchBox1 = "";
         querySearchBox2 = "";
         querySearchBox3 = "";
@@ -252,7 +279,7 @@ public class SearchActivity extends AppCompatActivity {
         querySearchBox6 = "";
     }
 
-
+    // Listener on Checkboxes to update category values if checked. Reset value to empty if unchecked
     public void onCheckboxClicked(View view) {
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
@@ -321,6 +348,7 @@ public class SearchActivity extends AppCompatActivity {
     // BEGIN DATE : Text View Listener + DatePicker + Label update
     // -----------------------------------------------------------
 
+    // Attach listener to TextView that calls a DatePickerDialog when clicked on
     private void initializeOnClickBeginDateListener() {
         mEditText_beginDate = findViewById(R.id.begin_date_edittext);
         mCalendar = Calendar.getInstance();
@@ -339,7 +367,6 @@ public class SearchActivity extends AppCompatActivity {
         };
 
         mEditText_beginDate.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(SearchActivity.this, date, mCalendar
@@ -350,15 +377,17 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    // Update text field value with the chosen Date, date displayed should be: dd/MM/yyyy, for example 10/03/2018 for 10th March 2018
     private void updateBeginDateLabel() {
-        String myFormat = "MM/dd/yyyy";
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        String mFormat = "dd/MM/yyyy";
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(mFormat, Locale.US);
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
 
         mEditText_beginDate.setText(sdf.format(mCalendar.getTime()));
         mBeginDate = sdf2.format(mCalendar.getTime());
     }
 
+    // Sets date value to null
     private void nullifyBeginDate() {
         mBeginDate = null;
     }
@@ -367,6 +396,7 @@ public class SearchActivity extends AppCompatActivity {
     // END DATE : TextView Listener + DatePicker + Label update
     // ---------------------------------------------------------
 
+    // Attach listener to TextView that calls a DatePickerDialog when clicked on
     private void initializeOnClickEndDateListener() {
 
         mEditText_endDate = findViewById(R.id.end_date_edittext);
@@ -397,6 +427,7 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    // Update text field value with the chosen Date, date displayed should be: dd/MM/yyyy, for example 10/03/2018 for 10th March 2018
     private void updateEndDateLabel() {
         String dateFormat = "MM/dd/yyyy";
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
@@ -407,75 +438,17 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    // Sets date value to null
     private void nullifyEndDate() {
         mEndDate = null;
     }
 
-    // ------------------------------------------------
-    // AlertDialog Errors
-    // ------------------------------------------------
-
-    private void notifyEmptyCheckboxesError() {
-
-        // Build an AlertDialog for the Help section
-            AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this, R.style.AlertDialog_Style);
-            // Set Title and Message content
-            builder.setTitle(R.string.alertdialog_title_error_search);
-            builder.setMessage(getText(R.string.alertdialog_content_empty_checkboxes_search));
-            // Neutral button
-            builder.setNeutralButton(R.string.alertdialog_button_neutral, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-
-            builder.show();
-
-        }
-
-    private void notifyEmptyQueryfieldError() {
-
-        // Build an AlertDialog for the Help section
-        AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this, R.style.AlertDialog_Style);
-        // Set Title and Message content
-        builder.setTitle(R.string.alertdialog_title_error_search);
-        builder.setMessage(getText(R.string.alertdialog_content_empty_query_search));
-        // Neutral button
-        builder.setNeutralButton(R.string.alertdialog_button_neutral, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
-
-    }
-
-    private void notifyEmptySearchResultsError() {
-
-        // Build an AlertDialog for the Help section
-        AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this, R.style.AlertDialog_Style);
-        // Set Title and Message content
-        builder.setTitle(R.string.alertdialog_title_error_search);
-        builder.setMessage(getText(R.string.alertdialog_content_empty_results_search));
-        // Neutral button
-        builder.setNeutralButton(R.string.alertdialog_button_neutral, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
-
-    }
 
     // ------------------------------
     // Bundled values to pass to Call
     // ------------------------------
 
+    // Fetch all queries from the TextField and reformat them in a proper String to later pass as a valid call argument
     private void fetchBundledStringFQueries() {
         String mFQueryReformated = "news_desk:(";
         List<String> news_desk = new ArrayList<>();
@@ -498,8 +471,12 @@ public class SearchActivity extends AppCompatActivity {
     // Init Search form Search Button
     // ------------------------------
 
-    private boolean conditionsCheck() {
-
+    // Verify is all requirements are met before starting a query
+    private boolean checkQueryRequirements() {
+        /* Returns TRUE = ALL REQUIREMENTS MET
+           Returns FALSE = IF THE 2 REQUIREMENTS AREN'T MET
+           1st requirement: - At least 1 CheckBox must be checked (has not an empty String value)
+           2st requirement: - Text query must NOT be empty  */
         if (querySearchBox1.isEmpty() && querySearchBox2.isEmpty() && querySearchBox3.isEmpty() && querySearchBox4.isEmpty() && querySearchBox5.isEmpty() && querySearchBox6.isEmpty()
                 || mQueryTextInput.isEmpty()) {
 
@@ -512,40 +489,41 @@ public class SearchActivity extends AppCompatActivity {
             }
 
         }else{
+
             return true;
         }
-
         return true;
     }
 
+    // Call Error messages for each specified failed requirement
     private void callErrorMessages() {
 
         if (querySearchBox1.isEmpty() && querySearchBox2.isEmpty() && querySearchBox3.isEmpty() && querySearchBox4.isEmpty() && querySearchBox5.isEmpty() && querySearchBox6.isEmpty()
                 || mQueryTextInput.isEmpty()) {
-
+            // Empty Checkbox failed requirement
             if (querySearchBox1.isEmpty() && querySearchBox2.isEmpty() && querySearchBox3.isEmpty() && querySearchBox4.isEmpty() && querySearchBox5.isEmpty() && querySearchBox6.isEmpty()) {
-
                 notifyEmptyCheckboxesError();
             }
-
+            // Empty Query field failed requirement
             if (mQueryTextInput.isEmpty()) {
 
-                notifyEmptyQueryfieldError();
+                notifyEmptyQueryFieldError();
             }
         }
     }
 
 
-
-    private void startSearch() {
+    // Sets a listener to the Search button and initiate an API Call if requirements are met
+    private void startSearchFromSearchButton() {
 
         mSearchButton = findViewById(R.id.button_search);
         mSearchButton.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View view) {
-                        // Check that at least 1 Checkbox is checked, notify if none are
-                        if (conditionsCheck())
-                            searchQuery();
+                        /*1st requirement: - At least 1 CheckBox must be checked (has not an empty String value)
+                          2st requirement: - Text query must NOT be empty */
+                        if (checkQueryRequirements())
+                            startSearchApiCall();
                         else
                             callErrorMessages();
                     }
@@ -553,18 +531,21 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    // Sets a listener to the Notifications switch. Resets to default if missing requirements.
     private void setNotificationsSwitchListener() {
 
         mNotificationsSwitch = findViewById(R.id.notification_switch);
         mNotificationsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        if (conditionsCheck()) {
+                        if (checkQueryRequirements()) {
                             Toast.makeText(getBaseContext(), "SUCCESS", Toast.LENGTH_LONG).show();
                             mNotificationsSwitch.setChecked(true);
+                            searchNotificationsApiCall();
                         }
 
                         // Reset Notifications Switch to OFF state if minimum requirements are not met
+                        // & Reset
                         else {
                             callErrorMessages();
                             mNotificationsSwitch.setChecked(false);
@@ -573,17 +554,28 @@ public class SearchActivity extends AppCompatActivity {
 
                     else {
                         mNotificationsSwitch.setChecked(false);
+                            emptyAllNotificationsFields();
                     }
 
                 }
             });
         }
 
+        private void emptyAllNotificationsFields() {
+        // 1 - Clear Text field
+        mEditText_queries.getText().clear();
+        // 2 - Set Text value to empty
+        emptyQueryFieldValues();
+        // 3 - Reset all Checkboxes to UNCHECKED and empty their values
+        emptyAllCheckboxesValues();
+
+        }
+
     // --------
     // API Call
     // --------
 
-    private void searchQuery() {
+    private void startSearchApiCall() {
 
         fetchBundledStringFQueries();
 
@@ -641,6 +633,108 @@ public class SearchActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void searchNotificationsApiCall() {
+
+        fetchBundledStringFQueries();
+
+        System.out.println(mBundledFQuery);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseWrapper> call = apiService.loadSearch(ApiKey.NYT_API_KEY, mQueryTextTrimmed, mBundledFQuery, this.getString(R.string.newest_sort_order), null, null);
+        call.enqueue(new Callback<com.raspberyl.mynews.model.ResponseWrapper>() {
+            @Override
+            public void onResponse(Call<ResponseWrapper> call, Response<ResponseWrapper> response) {
+
+                if(response.isSuccessful()) {
+
+                    mSearchResults = response.body().getResponse().getDocs();
+                    mSearchLastDocDate = response.body().getResponse().getDocs().get(0).getPub_date();
+
+                    // If List is empty, then display Error message
+                    if (mSearchResults.isEmpty()) {
+                        notifyEmptySearchResultsError();
+                    }
+
+                    SharedPreferencesUtils.saveString(getBaseContext(), SHARED_PREFERENCES_LAST_SAVED_DATE, mSearchLastDocDate);
+
+                }else{
+
+                    System.out.println("ERROR 1");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseWrapper> call, Throwable t) {
+
+                Log.e(TAG, t.toString());
+                System.out.println("ERROR 2");
+
+            }
+        });
+
+    }
+
+    // ------------------------------------------------
+    // AlertDialog Errors
+    // ------------------------------------------------
+
+    private void notifyEmptyCheckboxesError() {
+
+        // Build an AlertDialog for the Help section
+        AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this, R.style.AlertDialog_Style);
+        // Set Title and Message content
+        builder.setTitle(R.string.alertdialog_title_error_search);
+        builder.setMessage(getText(R.string.alertdialog_content_empty_checkboxes_search));
+        // Neutral button
+        builder.setNeutralButton(R.string.alertdialog_button_neutral, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
+    }
+
+    private void notifyEmptyQueryFieldError() {
+
+        // Build an AlertDialog for the Help section
+        AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this, R.style.AlertDialog_Style);
+        // Set Title and Message content
+        builder.setTitle(R.string.alertdialog_title_error_search);
+        builder.setMessage(getText(R.string.alertdialog_content_empty_query_search));
+        // Neutral button
+        builder.setNeutralButton(R.string.alertdialog_button_neutral, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
+    }
+
+    private void notifyEmptySearchResultsError() {
+
+        // Build an AlertDialog for the Help section
+        AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this, R.style.AlertDialog_Style);
+        // Set Title and Message content
+        builder.setTitle(R.string.alertdialog_title_error_search);
+        builder.setMessage(getText(R.string.alertdialog_content_empty_results_search));
+        // Neutral button
+        builder.setNeutralButton(R.string.alertdialog_button_neutral, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
 
     }
 
