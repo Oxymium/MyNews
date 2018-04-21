@@ -55,6 +55,11 @@
     <string name="search_label_begin_date">Begin date</string>
     <string name="search_label_end_date">End date</string>
 
+    <!-- View layout Strings -->
+    <string name="category_text"><b>Category</b></string>
+    <string name="date_text">Date</string>
+    <string name="content_text">Content</string>
+
 
 
 

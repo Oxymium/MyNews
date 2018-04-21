@@ -96,7 +96,7 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.MyViewHolder> 
 
                 if (!TextUtils.isEmpty(imageUrl)) {
                     Picasso.get().load("https://www.nytimes.com/"+ imageUrl)
-                            .resize(250, 250)
+                            .resize(200, 200)
                             .into(holder.thumbnail);
                 }
             }
