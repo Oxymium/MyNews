@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -71,13 +72,15 @@ public class SearchActivity extends AppCompatActivity {
     private TextView mTextView_begin_label, mTextView_end_label;
 
     private CheckBox mCheckBox1, mCheckBox2, mCheckBox3, mCheckBox4, mCheckBox5, mCheckBox6;
+    private boolean mCheckBoxChecked1, mCheckBoxChecked2, mCheckBoxChecked3, mCheckBoxChecked4, mCheckBoxChecked5, mCheckBoxChecked6;
+    private boolean mSwitchChecked;
 
     private EditText mEditText_queries,
                      mEditText_beginDate,
                      mEditText_endDate;
     private Button mSearchButton;
 
-    private String mSearchLastDocDate;
+
 
     private List<String> queriesChecked;
 
@@ -93,12 +96,34 @@ public class SearchActivity extends AppCompatActivity {
     private String mBundledFQuery;
 
     private List<Docs> mSearchResults;
+    private List<Docs> mNoticationsSearchResults;
 
     private int SEARCH_ANSWER_CODE;
 
     private DocsAdapter mDocsAdapter;
 
     private Calendar mCalendar;
+
+    // SharedPreferences saved values (notification)
+
+    private final static String SHARED_PREFERENCES_SAVED_QUERY_TEXT_FIELD = "SHARED_PREFERENCES_SAVED_QUERY_TEXT_FIELD";
+
+    private final static String SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_1 = "SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_1";
+    private final static String SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_2 = "SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_2";
+    private final static String SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_3 = "SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_3";
+    private final static String SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_4 = "SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_4";
+    private final static String SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_5 = "SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_5";
+    private final static String SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_6 = "SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_6";
+
+    private final static String SHARED_PREFERENCES_SAVED_SWITCH_STATE = "SHARED_PREFERENCES_SAVED_SWITCH_STATE";
+
+    public static final String SHARED_PREFERENCES_SAVED_DATE = "SHARED_PREFERENCES_LAST_SAVED_DATE";
+
+
+
+    private final static String DEFAULT_DATE = "1700-01-01T01:01:01+0000";
+    private String mSearchLastDocDate;
+    private String mSearchCurrentDocDate;
 
     private RecyclerView mRecyclerView;
 
@@ -107,10 +132,14 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        // TEST
+        this.scheduleNotification(getNotification("New Article available"), 10000);
+
         this.configureToolbarSearch();
 
 
     }
+
 
     // -----------------------------------------------------------------
     // Config Toolbar, and organize layout depending of receiving intent
@@ -157,6 +186,7 @@ public class SearchActivity extends AppCompatActivity {
                 fetchQueriesFromField();
                 //
                 setNotificationsSwitchListener();
+
 
                 break;
         }
@@ -292,57 +322,71 @@ public class SearchActivity extends AppCompatActivity {
             case R.id.search_box1:
                 if (checked) {
                      querySearchBox1 = this.getString(R.string.search_box1);
+                     mCheckBoxChecked1 = true;
                 }
                 else
                     querySearchBox1 = "";
+                    mCheckBoxChecked1 = false;
 
-                    break;
+
+                break;
 
             case R.id.search_box2:
                 if (checked) {
                     querySearchBox2 = this.getString(R.string.search_box2);
+                    mCheckBoxChecked2 = true;
                 }
                 else
                     querySearchBox2 = "";
+                    mCheckBoxChecked2 = false;
 
                     break;
 
             case R.id.search_box3:
                 if (checked) {
                     querySearchBox3 = this.getString(R.string.search_box3);
+                    mCheckBoxChecked3 = true;
                 }
 
                 else
                     querySearchBox3 = "";
+                    mCheckBoxChecked3 = false;
 
                     break;
 
             case R.id.search_box4:
                 if (checked) {
                     querySearchBox4 = this.getString(R.string.search_box4);
+                    mCheckBoxChecked4 = true;
                 }
 
                 else
                     querySearchBox4 = "";
+                    mCheckBoxChecked4 = false;
 
                     break;
 
             case R.id.search_box5:
                 if (checked) {
                     querySearchBox5 = this.getString(R.string.search_box5);
+                    mCheckBoxChecked5 = true;
                 }
                 else
                     querySearchBox5 = "";
+                    mCheckBoxChecked5 = false;
 
-                    break;
+                break;
 
             case R.id.search_box6:
                 if (checked) {
                     querySearchBox6 = this.getString(R.string.search_box6);
+                    mCheckBoxChecked6 = true;
                 }
                 else
                     querySearchBox6 = "";
-                    break;
+                    mCheckBoxChecked6 = false;
+
+                break;
         }
     }
 
@@ -543,6 +587,11 @@ public class SearchActivity extends AppCompatActivity {
                     if (isChecked) {
                         if (checkQueryRequirements()) {
                             mNotificationsSwitch.setChecked(true);
+                            // Turn value to true (for SP save)
+                            mSwitchChecked = true;
+                            // Saves VALUES to call later
+                            saveNotficationsFields();
+
                             searchNotificationsApiCall();
                             // START
 
@@ -567,14 +616,41 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         private void emptyAllNotificationsFields() {
-        // 1 - Clear Text field
-        mEditText_queries.getText().clear();
-        // 2 - Set Text value to empty
-        emptyQueryFieldValues();
-        // 3 - Reset all Checkboxes to UNCHECKED and empty their values
-        emptyAllCheckboxesValues();
+            // 1 - Clear Text field
+             mEditText_queries.getText().clear();
+             // 2 - Set Text value to empty
+            emptyQueryFieldValues();
+              // 3 - Reset all Checkboxes to UNCHECKED and empty their values
+               emptyAllCheckboxesValues();
+           }
+
+
+        private void saveNotficationsFields() {
+            // 1 - Save Text Query
+             SharedPreferencesUtils.saveString(getBaseContext(), SHARED_PREFERENCES_SAVED_QUERY_TEXT_FIELD, mQueryTextInput);
+            // 2 - Save Checkbox values & checked
+            saveCheckboxesStates();
+            // 3 - Save switch state
+            saveSwitchState();
 
         }
+
+        private void saveCheckboxesStates() {
+            SharedPreferencesUtils.saveBoolean(getBaseContext(), SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_1, mCheckBoxChecked1);
+            SharedPreferencesUtils.saveBoolean(getBaseContext(), SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_2, mCheckBoxChecked2);
+            SharedPreferencesUtils.saveBoolean(getBaseContext(), SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_3, mCheckBoxChecked3);
+            SharedPreferencesUtils.saveBoolean(getBaseContext(), SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_4, mCheckBoxChecked4);
+            SharedPreferencesUtils.saveBoolean(getBaseContext(), SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_5, mCheckBoxChecked5);
+            SharedPreferencesUtils.saveBoolean(getBaseContext(), SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_6, mCheckBoxChecked6);
+
+        }
+
+        private void saveSwitchState() {
+            SharedPreferencesUtils.saveBoolean(getBaseContext(),SHARED_PREFERENCES_SAVED_SWITCH_STATE, mSwitchChecked);
+
+        }
+
+
 
     // --------
     // API Call
@@ -608,13 +684,9 @@ public class SearchActivity extends AppCompatActivity {
                     mDocsAdapter = new DocsAdapter(mSearchResults, SearchActivity.this);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     mRecyclerView.setAdapter(mDocsAdapter);
-
-
-                    // Add horizontal divider to the Recyclerview
-
-                        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), R.drawable.custom_divider);
-                        mRecyclerView.addItemDecoration(mDividerItemDecoration);
-                    //mRecyclerView.addItemDecoration(mDividerItemDecoration);
+                    // Horizontal custom Divider
+                    DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), R.drawable.custom_divider);
+                    mRecyclerView.addItemDecoration(mDividerItemDecoration);
 
                     }
 
@@ -635,6 +707,20 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    // ---------------------------
+    // API Notification Call error
+    // ---------------------------
+
+    // Perform checks on published date
+    private boolean isCurrentPublishedDateTheSameAsThePrevious() {
+        String loadPreviousDate = SharedPreferencesUtils.loadString(SearchActivity.this, MainActivity.SHARED_PREFERENCES_LAST_SAVED_DATE, mSearchCurrentDocDate);
+        if (mSearchCurrentDocDate == loadPreviousDate) {
+            return true;
+        } else
+            return false;
+    }
+
+
     private void searchNotificationsApiCall() {
 
         fetchBundledStringFQueries();
@@ -649,24 +735,26 @@ public class SearchActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()) {
 
-                    mSearchResults = response.body().getResponse().getDocs();
-                    mSearchLastDocDate = response.body().getResponse().getDocs().get(0).getPub_date();
-                    System.out.println(mSearchLastDocDate);
-                    SharedPreferencesUtils.saveString(SearchActivity.this, MainActivity.SHARED_PREFERENCES_LAST_SAVED_DATE, mSearchLastDocDate);
 
-                    //Log.v("「Search」response", (Integer.toString(SEARCH_ANSWER_CODE)));
-                    //Log.w("Full「Search」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
-                    //SharedPreferencesUtils.saveString(getBaseContext(), SHARED_PREFERENCES_LAST_SAVED_DATE, mSearchLastDocDate);
-
-                    DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
-                            mRecyclerView.getContext(), R.drawable.custom_divider);
-                    mRecyclerView.addItemDecoration(mDividerItemDecoration);
+                    mNoticationsSearchResults = response.body().getResponse().getDocs();
 
                     // If List is empty, then display Error message
-                    if (mSearchResults.isEmpty()) {
-                        notifyEmptySearchResultsError();}
+                    if (mNoticationsSearchResults.isEmpty()) {
+                        notifyEmptyNotificationsSearchResultsError();
+                        // Will still add a value to the date to compare later.
+                        mSearchCurrentDocDate = DEFAULT_DATE;
+                    }
 
-                }else{
+                    else {
+
+                        mSearchCurrentDocDate = mNoticationsSearchResults.get(0).getPub_date();
+                    }
+
+                    // Saves the current published date, value should be either DEFAULT_PAST_DATE, or a new one
+                    SharedPreferencesUtils.saveString(SearchActivity.this, SHARED_PREFERENCES_SAVED_DATE, mSearchCurrentDocDate);
+
+
+                    }else{
 
                     System.out.println("ERROR 1");
                 }
@@ -687,18 +775,37 @@ public class SearchActivity extends AppCompatActivity {
     // AlarmManager
     // ------------------------------------------------
 
-    private void scheduleNotification() {
-    Calendar mCalendar = Calendar.getInstance();
-    mCalendar.set(Calendar.HOUR_OF_DAY, 7); // For 1 PM or 2 PM
-    mCalendar.set(Calendar.MINUTE, 0);
-    mCalendar.set(Calendar.SECOND, 0);
-    mCalendar.set(DAY_OF_YEAR, 1);
+    private void scheduleNotification(Notification notification, int delay) {
+        // Set Calendar to 7AM
+        Calendar mCalendar = Calendar.getInstance();
+        mCalendar.set(Calendar.HOUR_OF_DAY, 7); // For 7 AM
+        mCalendar.set(Calendar.MINUTE, 0);
+        mCalendar.set(Calendar.SECOND, 0);
+        mCalendar.set(DAY_OF_YEAR, 1);
 
-    PendingIntent pi = PendingIntent.getService(getBaseContext(), 0, new Intent(getBaseContext(), SearchActivity.class),PendingIntent.FLAG_UPDATE_CURRENT);
-    AlarmManager am = (AlarmManager) getBaseContext().getSystemService(Context.ALARM_SERVICE);
-    am.setRepeating(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(),
-    AlarmManager.INTERVAL_DAY, pi);
+        Intent notificationIntent = new Intent(SearchActivity.this, NotificationsReceiver.class);
+        notificationIntent.putExtra(NotificationsReceiver.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationsReceiver.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(SearchActivity.this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        // Alarm should trigger at 7AM each day
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+
+            }
+
+    private Notification getNotification(String content) {
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setContentTitle("TEST NOTIFICATION");
+        builder.setContentText(content);
+        builder.setSmallIcon(R.drawable.mn_navigation_drawer_logo);
+        return builder.build();
     }
+
+
+
+
 
     // Show Notification if new article is up
     private void showNotification(View view) {
@@ -771,6 +878,26 @@ public class SearchActivity extends AppCompatActivity {
         builder.show();
 
     }
+
+    private void notifyEmptyNotificationsSearchResultsError() {
+
+        // Build an AlertDialog for the Help section
+        AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this, R.style.AlertDialog_Style);
+        // Set Title and Message content
+        builder.setTitle(R.string.alertdialog_title_error_search);
+        builder.setMessage(getText(R.string.alertdialog_content_empty_results_notifications_search));
+        // Neutral button
+        builder.setNeutralButton(R.string.alertdialog_button_neutral, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
+    }
+
 
 }
 

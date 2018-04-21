@@ -40,6 +40,7 @@
     <string name="alertdialog_content_empty_checkboxes_search">At least <b>ONE</b> category must be checked before starting a search</string>
     <string name="alertdialog_content_empty_query_search">At least <b>ONE</b> word must be inserted before starting a search</string>
     <string name="alertdialog_content_empty_results_search">No search results found, try again</string>
+    <string name="alertdialog_content_empty_results_notifications_search">No results were found for this current Search, but it will still enable notifications feature.</string>
 
     <!-- SearchActivity/Notifications Strings -->
     <string name="search_box1">Arts</string>

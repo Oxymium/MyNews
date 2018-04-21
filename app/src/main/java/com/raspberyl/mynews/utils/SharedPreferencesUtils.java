@@ -27,6 +27,18 @@ public class SharedPreferencesUtils {
         return sharedPreferences.getString(key, string);
     }
 
+    public static void saveBoolean(@NonNull Context context, @NonNull String key, boolean booleanValue) {
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(key, booleanValue);
+        editor.apply();
+    }
+
+    public static boolean loadBoolean(@NonNull Context context, @NonNull String key, boolean booleanDefaultValue) {
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return sharedPreferences.getBoolean(key, booleanDefaultValue);
+    }
+
     public static void saveInt(@NonNull Context context, @NonNull String key, int intValue) {
         SharedPreferences sharedPreferences = getSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();

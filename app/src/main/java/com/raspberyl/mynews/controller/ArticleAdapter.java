@@ -95,8 +95,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.MyViewHo
 
             if (!TextUtils.isEmpty(imageUrl2)) {
                 Picasso.get().load(imageUrl2)
-                        .resize(250,
-                                250)
+                        .resize(250, 250)
                         .into(holder.thumbnail);
             }
         }

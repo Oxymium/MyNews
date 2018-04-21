@@ -61,8 +61,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureViewPager();
         this.setDefaultNavigationDrawerHighlightSelection();
 
-        this.testSharedPreferences();
-
     }
 
     public void testSharedPreferences() {
