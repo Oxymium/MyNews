@@ -5,8 +5,8 @@
     <dimen name="nav_header_height">135dp</dimen>
 
     <!-- Image -->
-    <dimen name="image_height">80dp</dimen>
-    <dimen name="image_width">80dp</dimen>
+    <dimen name="image_height">85dp</dimen>
+    <dimen name="image_width">85dp</dimen>
 
     <dimen name="image_padding_start">8dp</dimen>
     <dimen name="image_padding_end">8dp</dimen>
@@ -14,24 +14,24 @@
     <dimen name="image_padding_bottom">8dp</dimen>
 
     <!-- Text -->
-    <dimen name="category_text_size">12sp</dimen>
-    <dimen name="category_text_padding_top">15dp</dimen>
+    <dimen name="category_text_size">14sp</dimen>
+    <dimen name="category_text_padding_top">12dp</dimen>
     <dimen name="category_text_padding_start">5dp</dimen>
     <dimen name="category_text_padding_end">5dp</dimen>
 
-    <dimen name="date_text_size">12sp</dimen>
-    <dimen name="date_text_padding_top">15dp</dimen>
+    <dimen name="date_text_size">14sp</dimen>
+    <dimen name="date_text_padding_top">12dp</dimen>
     <dimen name="date_text_padding_start">0dp</dimen>
-    <dimen name="date_text_padding_end">8dp</dimen>
+    <dimen name="date_text_padding_end">0dp</dimen>
 
-    <dimen name="content_text_size">15sp</dimen>
+    <dimen name="content_text_size">17sp</dimen>
     <dimen name="content_text_padding_top">5dp</dimen>
     <dimen name="content_text_padding_start">5dp</dimen>
     <dimen name="content_text_padding_end">5dp</dimen>
 
 
     <!-- Divider -->
-    <dimen name="divider_size">85dp</dimen>
+    <dimen name="divider_size">90dp</dimen>
 
 
 </resources>

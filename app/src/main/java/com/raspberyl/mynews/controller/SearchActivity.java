@@ -612,6 +612,7 @@ public class SearchActivity extends AppCompatActivity {
                     else {
                         mNotificationsSwitch.setChecked(false);
                             emptyAllNotificationsFields();
+                            setDailyAlarmNotificationOff();
                     }
 
                 }
@@ -770,6 +771,17 @@ public class SearchActivity extends AppCompatActivity {
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, mAlarmCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
 
         Toast.makeText(SearchActivity.this, "Start Alarm", Toast.LENGTH_LONG).show();
+    }
+
+    private void setDailyAlarmNotificationOff() {
+
+        Intent mIntent = new Intent(this, NotifyService.class);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, mIntent, 0);
+
+        alarmManager.cancel(pendingIntent);
+
+
     }
 
 
