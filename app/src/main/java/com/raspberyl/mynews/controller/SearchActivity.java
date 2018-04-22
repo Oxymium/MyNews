@@ -119,6 +119,10 @@ public class SearchActivity extends AppCompatActivity {
 
     public static final String SHARED_PREFERENCES_SAVED_DATE = "SHARED_PREFERENCES_LAST_SAVED_DATE";
 
+    // Used to retrieve notification terms
+    public static final String SAVED_QUERY_NOTIFICATION = "SAVED_QUERY_NOTIFICATION";
+    public static final String SAVED_CATEGORY_NOTIFICATION = "SAVED_CATEGORY_NOTIFICATION";
+    public static final String SAVED_LAST_DOC_DATE = "SAVED_LAST_DOC_DATE";
 
 
     private final static String DEFAULT_DATE = "1700-01-01T01:01:01+0000";
@@ -132,8 +136,6 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        // TEST
-        this.scheduleNotification(getNotification("New Article available"), 10000);
 
         this.configureToolbarSearch();
 
@@ -589,11 +591,12 @@ public class SearchActivity extends AppCompatActivity {
                             mNotificationsSwitch.setChecked(true);
                             // Turn value to true (for SP save)
                             mSwitchChecked = true;
-                            // Saves VALUES to call later
+                            // Saves VALUES to call later to compare with Alarm
                             saveNotficationsFields();
-
+                            // Calls API
                             searchNotificationsApiCall();
-                            // START
+                            // START ALARM
+                            setDailyAlarmNotificationOn();
 
 
                         }
@@ -626,28 +629,10 @@ public class SearchActivity extends AppCompatActivity {
 
 
         private void saveNotficationsFields() {
-            // 1 - Save Text Query
-             SharedPreferencesUtils.saveString(getBaseContext(), SHARED_PREFERENCES_SAVED_QUERY_TEXT_FIELD, mQueryTextInput);
-            // 2 - Save Checkbox values & checked
-            saveCheckboxesStates();
-            // 3 - Save switch state
-            saveSwitchState();
-
-        }
-
-        private void saveCheckboxesStates() {
-            SharedPreferencesUtils.saveBoolean(getBaseContext(), SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_1, mCheckBoxChecked1);
-            SharedPreferencesUtils.saveBoolean(getBaseContext(), SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_2, mCheckBoxChecked2);
-            SharedPreferencesUtils.saveBoolean(getBaseContext(), SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_3, mCheckBoxChecked3);
-            SharedPreferencesUtils.saveBoolean(getBaseContext(), SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_4, mCheckBoxChecked4);
-            SharedPreferencesUtils.saveBoolean(getBaseContext(), SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_5, mCheckBoxChecked5);
-            SharedPreferencesUtils.saveBoolean(getBaseContext(), SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_6, mCheckBoxChecked6);
-
-        }
-
-        private void saveSwitchState() {
-            SharedPreferencesUtils.saveBoolean(getBaseContext(),SHARED_PREFERENCES_SAVED_SWITCH_STATE, mSwitchChecked);
-
+            // 1 - Save Query
+            SharedPreferencesUtils.saveString(getBaseContext(), SAVED_QUERY_NOTIFICATION, mQueryTextInput);
+            // 2 - Save FQuery
+            SharedPreferencesUtils.saveString(getBaseContext(), SAVED_CATEGORY_NOTIFICATION, mBundledFQuery);
         }
 
 
@@ -711,15 +696,6 @@ public class SearchActivity extends AppCompatActivity {
     // API Notification Call error
     // ---------------------------
 
-    // Perform checks on published date
-    private boolean isCurrentPublishedDateTheSameAsThePrevious() {
-        String loadPreviousDate = SharedPreferencesUtils.loadString(SearchActivity.this, MainActivity.SHARED_PREFERENCES_LAST_SAVED_DATE, mSearchCurrentDocDate);
-        if (mSearchCurrentDocDate == loadPreviousDate) {
-            return true;
-        } else
-            return false;
-    }
-
 
     private void searchNotificationsApiCall() {
 
@@ -775,46 +751,25 @@ public class SearchActivity extends AppCompatActivity {
     // AlarmManager
     // ------------------------------------------------
 
-    private void scheduleNotification(Notification notification, int delay) {
-        // Set Calendar to 7AM
-        Calendar mCalendar = Calendar.getInstance();
-        mCalendar.set(Calendar.HOUR_OF_DAY, 7); // For 7 AM
-        mCalendar.set(Calendar.MINUTE, 0);
-        mCalendar.set(Calendar.SECOND, 0);
-        mCalendar.set(DAY_OF_YEAR, 1);
+    private void setDailyAlarmNotificationOn() {
+        Calendar mAlarmCalendar = Calendar.getInstance();
+        mAlarmCalendar.set(Calendar.HOUR_OF_DAY, 7); // For 7 AM
+        mAlarmCalendar.set(Calendar.MINUTE, 0);
+        mAlarmCalendar.set(Calendar.SECOND, 0);
 
-        Intent notificationIntent = new Intent(SearchActivity.this, NotificationsReceiver.class);
-        notificationIntent.putExtra(NotificationsReceiver.NOTIFICATION_ID, 1);
-        notificationIntent.putExtra(NotificationsReceiver.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(SearchActivity.this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //Check if calendar is set in the past
+        if (mAlarmCalendar.getTimeInMillis() < System.currentTimeMillis()) {
+            //Add one day to the calendar (or whatever repeat interval you would like)
+            mAlarmCalendar.add(Calendar.DAY_OF_YEAR, 1);
+        }
 
-        long futureInMillis = SystemClock.elapsedRealtime() + delay;
-        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        // Alarm should trigger at 7AM each day
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        Intent mIntent = new Intent(this, NotifyService.class);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, mIntent, 0);
 
-            }
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, mAlarmCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
 
-    private Notification getNotification(String content) {
-        Notification.Builder builder = new Notification.Builder(this);
-        builder.setContentTitle("TEST NOTIFICATION");
-        builder.setContentText(content);
-        builder.setSmallIcon(R.drawable.mn_navigation_drawer_logo);
-        return builder.build();
-    }
-
-
-
-
-
-    // Show Notification if new article is up
-    private void showNotification(View view) {
-        Notification.Builder builder = new Notification.Builder(this);
-        builder.setContentTitle("New article available");
-        builder.setContentText("Test");
-        builder.setTicker("Alert new message");
-        builder.setSmallIcon(R.drawable.mn_navigation_drawer_logo);
-        builder.build();
+        Toast.makeText(SearchActivity.this, "Start Alarm", Toast.LENGTH_LONG).show();
     }
 
 

@@ -63,10 +63,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    public void testSharedPreferences() {
-        String test = SharedPreferencesUtils.loadString(MainActivity.this, MainActivity.SHARED_PREFERENCES_LAST_SAVED_DATE, mStringTest);
-        Toast.makeText(MainActivity.this, test, Toast.LENGTH_LONG).show();
-    }
     // ------------------------------------------------------
     // NavigationDrawer default/match tab highlight selection
     // ------------------------------------------------------

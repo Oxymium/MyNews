@@ -29,7 +29,8 @@
 
         <activity android:name=".controller.WebViewActivity"></activity>
 
-        <receiver android:name=".controller.NotificationsReceiver"/>
+        <service android:name=".controller.NotifyService"
+            android:enabled="true" />
     </application>
 
 </manifest>

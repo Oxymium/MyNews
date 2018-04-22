@@ -6,45 +6,44 @@ import android.content.SharedPreferences;
 import com.raspberyl.mynews.utils.SharedPreferencesUtils;
 
 import org.junit.Test;
+
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.text.ParseException;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 
 public class SharedPreferencesTest {
 
-    SharedPreferencesUtils sharedPreferencesUtils = mock(SharedPreferencesUtils.class);
-    SharedPreferences sharedPreferences = mock(SharedPreferences.class);
-    SharedPreferences.Editor editor = mock(SharedPreferences.Editor.class);
-    Context context = Mockito.mock(Context.class);
+    @Mock
+    SharedPreferencesUtils sharedPreferencesUtils;
+    @Mock
+    Context context;
 
-    String KEY = "KEY";
-    String inputString = "INPUT TEST";
-    String outputString;
-    String expectedString = "INPUT TEST";
 
     @Test
-    public void SharedPreferencesSaveStringTest() throws Exception {
+    public void SharedPreferencesSaveStringTest () {
 
-        when(context.getString(anyString())).thenReturn("test");
-        sharedPreferences = getSharedPreferences(context);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(key, string);
-        editor.apply();
+        String KEY = "KEY";
+        String input = "Test";
+        String expected = "Test";
 
-        SharedPreferencesUtils.saveString(context, KEY, inputString);
-        outputString = SharedPreferencesUtils.loadString(context, KEY, inputString);
+        sharedPreferencesUtils.saveString(context, KEY, input);
+        String output = sharedPreferencesUtils.loadString(context, KEY, input);
 
-
-        assertEquals(outputString, expectedString);
-
+        assertEquals(expected, output);
 
     }
+
 }
 
 
