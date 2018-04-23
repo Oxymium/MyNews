@@ -61,10 +61,12 @@ public class NotifyService extends Service {
     @Override
     public void onCreate() {
 
+        // Fetch last date from SharedPreferences
         mPreviousDocPublishedDate = SharedPreferencesUtils.loadString(getBaseContext(), SHARED_PREFERENCES_SAVED_DATE, DEFAULT_STRING_VALUE);
-        //
+        // Initiate a search
         callApi();
 
+        // Will try 10sec later to compare
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
@@ -76,7 +78,7 @@ public class NotifyService extends Service {
                     SharedPreferencesUtils.saveString(getBaseContext(), SHARED_PREFERENCES_SAVED_DATE, mCurrentDocPublishedDate); }
 
                 else {
-
+                    // Test
                     sendNotification();
                 }
             }
@@ -88,11 +90,11 @@ public class NotifyService extends Service {
 
     }
 
+    // Initiate search with the notification's values
     public void callApi() {
 
         mFetchedQueries = SharedPreferencesUtils.loadString(getBaseContext(), SearchActivity.SAVED_QUERY_NOTIFICATION, DEFAULT_STRING_VALUE);
         mFetchedCategories = SharedPreferencesUtils.loadString(getBaseContext(), SearchActivity.SAVED_CATEGORY_NOTIFICATION, DEFAULT_STRING_VALUE);
-
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ResponseWrapper> call = apiService.loadSearch(ApiKey.NYT_API_KEY, mFetchedQueries, mFetchedCategories, this.getString(R.string.newest_sort_order), null, null);
@@ -139,6 +141,7 @@ public class NotifyService extends Service {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
             int importance = NotificationManager.IMPORTANCE_HIGH;
+            // Build channel
             NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
             mChannel.setDescription(Description);
             mChannel.enableLights(true);

@@ -74,11 +74,6 @@ public class FragmentBusiness extends Fragment {
                 mBusinessList = response.body().getResponse().getDocs();
 
 
-                // Json output into console
-                //Log.v("「Business」response", (Integer.toString(BUSINESS_ANSWER_CODE)));
-                //Log.w("Full「Business」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
-
-
                 mDocsAdapter = new DocsAdapter(mBusinessList, getContext());
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 mRecyclerView.setAdapter(mDocsAdapter);
@@ -91,7 +86,7 @@ public class FragmentBusiness extends Fragment {
 
                 }else{
 
-                    System.out.println("ERROR");
+                    Toast.makeText(getContext(), "Error" + response.code(), Toast.LENGTH_LONG).show();
 
                 }
 

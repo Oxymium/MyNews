@@ -105,20 +105,7 @@ public class Docs {
         this.multimedia = multimedia;
     }
 
-    // Method to returns 「New_desk」 > 「Section_name」 format
 
-    public String getNewdesk_sectionName() {
-
-        String newDesk_sectionName = new_desk + " > " + section_name;
-        String newDesk_simple = new_desk;
-
-        if (section_name == null) {
-            return newDesk_simple;
-        } else {
-            return newDesk_sectionName;
-        }
-
-    }
 
 
 }

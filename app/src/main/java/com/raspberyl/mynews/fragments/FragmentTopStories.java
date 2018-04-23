@@ -88,7 +88,7 @@ public class FragmentTopStories extends Fragment {
 
                 } else {
 
-                    Toast.makeText(getContext(), "ERROR", Toast.LENGTH_LONG);
+                    Toast.makeText(getContext(), "Error" + response.code(), Toast.LENGTH_LONG).show();
                 }
 
             }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.raspberyl.mynews.model.Article;
 import com.raspberyl.mynews.model.MediaMetadata;
+import com.raspberyl.mynews.utils.CategoryReformatUtils;
 import com.raspberyl.mynews.utils.DateConvertUtils;
 import com.squareup.picasso.Picasso;
 import com.raspberyl.mynews.R;
@@ -65,9 +66,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.MyViewHo
 
         // Display Section & Subsection in the following format: 「Section」>「Subsection」
         // If 「Subsection」doesn't exist, simply displays 「Section」
-        if (article.getSubsection() == null) {
-            holder.category.setText(article.getSection());
-        }else{ holder.category.setText(article.getSection_Subsection()); }
+        holder.category.setText(CategoryReformatUtils.reformatCategory(article.getSection(), article.getSubsection()));
 
         // Display「Title」in the View's body
         holder.description.setText(article.getTitle());

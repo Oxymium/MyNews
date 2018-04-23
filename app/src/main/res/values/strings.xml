@@ -32,7 +32,7 @@
     <string name="alertdialog_button_neutral">OK</string>
 
     <!-- AlertDialog content Strings -->
-    <string name="alertdialog_content_help_string">Search: performs query into the Search API.</string>
+    <string name="alertdialog_content_help_string">Searches must be initiated with at least 1 Word AND 1 category</string>
     <string name="alertdialog_content_about_string">My News 2018 - All articles come from the <b>New York Times APIs</b>, and belong to their respective owners. API used: <i>TopStories API</i>, <i>MostPopular API</i> and <i>Search API</i></string>
 
     <string name="alertdialog_title_error_search">Error</string>

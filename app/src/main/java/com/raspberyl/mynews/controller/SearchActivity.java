@@ -72,23 +72,12 @@ public class SearchActivity extends AppCompatActivity {
     private TextView mTextView_begin_label, mTextView_end_label;
 
     private CheckBox mCheckBox1, mCheckBox2, mCheckBox3, mCheckBox4, mCheckBox5, mCheckBox6;
-    private boolean mCheckBoxChecked1, mCheckBoxChecked2, mCheckBoxChecked3, mCheckBoxChecked4, mCheckBoxChecked5, mCheckBoxChecked6;
-    private boolean mSwitchChecked;
 
     private EditText mEditText_queries,
                      mEditText_beginDate,
                      mEditText_endDate;
     private Button mSearchButton;
 
-
-
-    private List<String> queriesChecked;
-
-    private String mSearchTerms;
-
-    // ------------------------
-    // Queries for the API Call
-    // ------------------------
     private String mBeginDate, mEndDate;
     private String querySearchBox1, querySearchBox2, querySearchBox3, querySearchBox4, querySearchBox5, querySearchBox6;
     private String mQueryTextInput;
@@ -98,38 +87,34 @@ public class SearchActivity extends AppCompatActivity {
     private List<Docs> mSearchResults;
     private List<Docs> mNoticationsSearchResults;
 
-    private int SEARCH_ANSWER_CODE;
-
     private DocsAdapter mDocsAdapter;
 
     private Calendar mCalendar;
 
-    // SharedPreferences saved values (notification)
-
+    // ------------------TO_DO : Retrieve notifications values
+    private boolean mCheckBoxChecked1, mCheckBoxChecked2, mCheckBoxChecked3, mCheckBoxChecked4, mCheckBoxChecked5, mCheckBoxChecked6;
+    private boolean mSwitchChecked;
     private final static String SHARED_PREFERENCES_SAVED_QUERY_TEXT_FIELD = "SHARED_PREFERENCES_SAVED_QUERY_TEXT_FIELD";
-
     private final static String SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_1 = "SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_1";
     private final static String SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_2 = "SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_2";
     private final static String SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_3 = "SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_3";
     private final static String SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_4 = "SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_4";
     private final static String SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_5 = "SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_5";
     private final static String SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_6 = "SHARED_PREFERENCES_SAVED_CHECKBOXES_STATE_6";
-
     private final static String SHARED_PREFERENCES_SAVED_SWITCH_STATE = "SHARED_PREFERENCES_SAVED_SWITCH_STATE";
+    // ---------------------------
 
     public static final String SHARED_PREFERENCES_SAVED_DATE = "SHARED_PREFERENCES_LAST_SAVED_DATE";
 
     // Used to retrieve notification terms
     public static final String SAVED_QUERY_NOTIFICATION = "SAVED_QUERY_NOTIFICATION";
     public static final String SAVED_CATEGORY_NOTIFICATION = "SAVED_CATEGORY_NOTIFICATION";
-    public static final String SAVED_LAST_DOC_DATE = "SAVED_LAST_DOC_DATE";
-
 
     private final static String DEFAULT_DATE = "1700-01-01T01:01:01+0000";
-    private String mSearchLastDocDate;
     private String mSearchCurrentDocDate;
 
     private RecyclerView mRecyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +123,6 @@ public class SearchActivity extends AppCompatActivity {
 
 
         this.configureToolbarSearch();
-
 
     }
 
@@ -153,7 +137,7 @@ public class SearchActivity extends AppCompatActivity {
         //Set the toolbar
         setSupportActionBar(mToolbar);
         // Get a support ActionBar corresponding to this toolbar
-        ActionBar mActionBar = getSupportActionBar();
+        mActionBar = getSupportActionBar();
         // Enable back button
         mActionBar.setDisplayHomeAsUpEnabled(true);
         // Fetch intent to determine origin
@@ -186,9 +170,8 @@ public class SearchActivity extends AppCompatActivity {
                 emptyQueryFieldValues();
                 emptyAllCheckboxesValues();
                 fetchQueriesFromField();
-                //
+                // Attach listener to the Switch
                 setNotificationsSwitchListener();
-
 
                 break;
         }
@@ -263,7 +246,7 @@ public class SearchActivity extends AppCompatActivity {
         mEditText_queries = findViewById(R.id.search_editText);
         mEditText_queries.addTextChangedListener(new TextWatcher()
         {
-            // Each time a character is input, it will update the String variable
+            // Each time a character is input, it will update the String value
             @Override
             public void afterTextChanged(Editable mEdit)
             {

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.raspberyl.mynews.R;
 import com.raspberyl.mynews.model.Article;
 import com.raspberyl.mynews.model.Docs;
+import com.raspberyl.mynews.utils.CategoryReformatUtils;
 import com.raspberyl.mynews.utils.DateConvertUtils;
 import com.squareup.picasso.Picasso;
 
@@ -61,8 +62,8 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.MyViewHolder> 
 
         final Docs docs = mDocsList.get(position);
 
-        holder.category.setText(docs.getNewdesk_sectionName());
-
+        // holder.category.setText(docs.getNewdesk_sectionName());
+        holder.category.setText(CategoryReformatUtils.reformatCategory(docs.getNew_desk(), docs.getSection_name()));
 
         holder.description.setText(docs.getSnippet());
 
@@ -86,7 +87,7 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.MyViewHolder> 
         if(docs.getMultimedia() != null &&  docs.getMultimedia().size() > 0 ) {
 
             String imageUrl;
-            // Tries to get the standard image URL, but older articles have only 1 or 2 images
+            // Tries to get the standard image URL (item 2), but older articles have only 1 or 2 images
             try {
                 imageUrl = docs.getMultimedia().get(2).getUrl();
             }catch (IndexOutOfBoundsException e) {

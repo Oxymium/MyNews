@@ -20,6 +20,7 @@ public class WebViewActivity extends AppCompatActivity {
             mWebView = findViewById(R.id.activity_web_view);
             mArticleUrl = getIntent().getStringExtra("WebViewUrl");
 
+            // WebView init
             mWebView.setWebViewClient(new WebViewClient());
             mWebView.getSettings().setJavaScriptEnabled(true);
             mWebView.loadUrl(mArticleUrl);

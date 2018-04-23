@@ -36,11 +36,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
 
-    private String mStringTest;
-
-    public static final String SHARED_PREFERENCES_LAST_SAVED_DATE = "SHARED_PREFERENCES_LAST_SAVED_DATE";
-
-
     public static final String BUNDLED_EXTRA = "BUNDLED_EXTRA";
     public static final String SEARCH_ID = "9876";
     public static final String NOTIFICATIONS_ID = "6543";
@@ -134,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        // 5 - Handle back click to close menu
+        // Handle back click to close menu
         if (this.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             this.mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
@@ -145,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
-        // 4 - Handle Navigation Item Click
+        // Handle Navigation Item Click
         int id = item.getItemId();
 
         switch (id){
@@ -193,17 +188,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-    // 2 - Configure Drawer Layout
+    // Configure Drawer Layout
     private void configureDrawerLayout(){
-        this.mDrawerLayout = (DrawerLayout) findViewById(R.id.activity_main_drawer_layout);
+        this.mDrawerLayout = findViewById(R.id.activity_main_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
 
-    // 3 - Configure NavigationView
+    // Configure NavigationView
     private void configureNavigationView(){
-        this.mNavigationView = (NavigationView) findViewById(R.id.activity_main_nav_view);
+        this.mNavigationView = findViewById(R.id.activity_main_nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -255,13 +250,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // onOptionSelected methods
     // ------------------------
 
-    // Will start SearchActivity with Intent and Extra ID
+    // Will start SearchActivity with Intent and Extra ID (Search)
     public void onSearchSelected() {
         Intent mIntentSearch = new Intent(this, SearchActivity.class);
         mIntentSearch.putExtra(BUNDLED_EXTRA, SEARCH_ID);
         this.startActivity(mIntentSearch);
     }
 
+    // Will start SearchActivity with Intent and Extra ID (Notifications)
     public void onNotificationsSelected() {
         Intent mIntentNotifications = new Intent(this, SearchActivity.class);
         mIntentNotifications.putExtra(BUNDLED_EXTRA, NOTIFICATIONS_ID);
@@ -287,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void onAboutSelected() {
-        // Build an AlertDialog for the Help section
+        // Build an AlertDialog for the About section
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialog_Style);
         // Set Title and Message content
         builder.setTitle(R.string.toolbar_string_about);

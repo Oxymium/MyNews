@@ -70,11 +70,6 @@ public class FragmentMostPopular extends Fragment {
                     MOSTPOPULAR_ANSWER_CODE = response.code();
                     mMostPopularList = response.body().getResults();
 
-                    // Json output into console
-                    //Log.v("「Most popular」response", (Integer.toString(MOSTPOPULAR_ANSWER_CODE)));
-                    //Log.w("Full「Most popular」json", new GsonBuilder().setPrettyPrinting().create().toJson(response));
-
-
                     mArticleAdapter = new ArticleAdapter(mMostPopularList, getContext());
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     mRecyclerView.setAdapter(mArticleAdapter);
@@ -85,7 +80,7 @@ public class FragmentMostPopular extends Fragment {
 
                 }else{
 
-                    Toast.makeText(getContext(), "Error", Toast.LENGTH_LONG);
+                    Toast.makeText(getContext(), "Error" + response.code(), Toast.LENGTH_LONG).show();
                 }
 
 
